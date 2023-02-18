@@ -42,17 +42,11 @@
                         <input type="date" name="DateFrom" value="${param.DateFrom}"/>
                         <span>To: </span>
                         <input type="date" name="DateTo" value="${param.DateTo}" />
-                        <select name="txtStatus" class="form-select filter-select d-inline-block ms-2">
-                            <c:set var="all" value="all"/>
+                        <select name="txtStatus" class="form-select filter-select d-inline-block ms-2">                            
                             <c:set var="processing" value="processing"/>
                             <c:set var="completed" value="completed"/>
-                            <c:choose>
-                                <c:when test="${param.txtStatus eq all}">
-                                    <option value="all" selected>All</option>
-                                    <option value="processing">Processing</option>
-                                    <option value="completed">Completed</option>                                                           
-                                    <option value="cancel">Cancel</option>
-                                </c:when>
+                            <c:set var="cancel" value="cancel"/>
+                            <c:choose>                                
                                 <c:when test="${param.txtStatus eq processing}">
                                     <option value="all">All</option>
                                     <option value="processing" selected>Processing</option>
@@ -65,11 +59,17 @@
                                     <option value="completed" selected>Completed</option>                                                           
                                     <option value="cancel">Cancel</option>
                                 </c:when>
-                                <c:otherwise>
+                                <c:when test="${param.txtStatus eq cancel}">
                                     <option value="all">All</option>
                                     <option value="processing">Processing</option>
                                     <option value="completed">Completed</option>                                                           
                                     <option value="cancel" selected>Cancel</option>
+                                </c:when>
+                                <c:otherwise>                                    
+                                    <option value="all" selected>All</option>
+                                    <option value="processing">Processing</option>
+                                    <option value="completed">Completed</option>                                                           
+                                    <option value="cancel">Cancel</option>
                                 </c:otherwise>
                             </c:choose>                                                        
                         </select>
