@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Hp
  */
-public class RegistrationInsertError implements Serializable{
+public class AccountInsertError implements Serializable{
     private String emailMatchErr;
     private String passwordLengthErr;
     private String confirmNotMatch;
@@ -19,7 +19,8 @@ public class RegistrationInsertError implements Serializable{
     private String phoneLengthErr;
     private String agreeTermErr;
     private String emailIsExisted;    
-    public RegistrationInsertError() {
+    private String passwordOldNotMatch;
+    public AccountInsertError() {
     }
 
     /**
@@ -118,5 +119,21 @@ public class RegistrationInsertError implements Serializable{
      */
     public void setEmailIsExisted(String emailIsExisted) {
         this.emailIsExisted = emailIsExisted;
-    }                    
+    } 
+
+    /**
+     * @return the passwordOldNotMatch
+     */
+    public String getPasswordOldNotMatch() {
+        return passwordOldNotMatch;
+    }
+
+    /**
+     * @param passwordOldNotMatch the passwordOldNotMatch to set
+     */
+    public void setPasswordOldNotMatch(String passwordOldNotMatch) {
+        this.passwordOldNotMatch = passwordOldNotMatch;
+    }
+    
+    
 }

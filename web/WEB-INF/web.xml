@@ -53,12 +53,12 @@
         <servlet-class>tienph.controller.ChangeStatusOrderServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>OrderAgainServlet</servlet-name>
-        <servlet-class>tienph.controller.OrderAgainServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>DetailOrderServlet</servlet-name>
         <servlet-class>tienph.controller.DetailOrderServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ChangeInformationServlet</servlet-name>
+        <servlet-class>tienph.controller.ChangeInformationServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>DispatchController</servlet-name>
@@ -116,12 +116,12 @@
         <url-pattern>/ChangeStatusOrderServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>OrderAgainServlet</servlet-name>
-        <url-pattern>/OrderAgainServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>DetailOrderServlet</servlet-name>
         <url-pattern>/DetailOrderServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ChangeInformationServlet</servlet-name>
+        <url-pattern>/ChangeInformationServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

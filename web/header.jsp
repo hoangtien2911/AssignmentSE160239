@@ -68,7 +68,7 @@
                                 <span class="user-name my-2">${username}</span>
                                 <ul class="user-menu list-unstyled">
                                     <li class="user-menu-item">
-                                        <a href="#" class="text-decoration-none text-dark">My Account</a>
+                                        <a href="changeProfile.jsp" class="text-decoration-none text-dark">My Account</a>
                                     </li>
                                     <li class="user-menu-item">
                                         <c:url var="linkOrderHistory" value="DispatchController">

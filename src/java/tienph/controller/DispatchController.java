@@ -21,6 +21,7 @@ public class DispatchController extends HttpServlet {
     private final String LOGIN_CONTROLLER = "LoginServlet";
     private final String LOG_OUT_CONTROLLER = "LogoutServlet";
     private final String REGISTER_CONTROLLER = "RegistrationServlet";
+    private final String CHANGE_INFORMATION_CONTROLLER = "ChangeInformationServlet";
     private final String SEARCH_CONTROLLER = "SearchServlet";
     private final String CLOTHING_DETAIL_CONTROLLER = "ClothingDetailServlet";
     private final String ADD_TO_CART_CONTROLLER = "AddToCartServlet";    
@@ -55,6 +56,8 @@ public class DispatchController extends HttpServlet {
                 url = LOG_OUT_CONTROLLER;  
             } else if (button.equals("Register")) {
                 url = REGISTER_CONTROLLER;
+            } else if (button.equals("ChangeInformation")) {
+                url = CHANGE_INFORMATION_CONTROLLER;
             } else if (button.equals("Search")) {
                 url = SEARCH_CONTROLLER;
             } else if (button.equals("ClothingDetail")) {

@@ -80,7 +80,7 @@ public class LoginServlet extends HttpServlet {
             log("LoginServlet - SQL: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             log("LoginServlet - ClassNotFound" + e.getMessage());
-        }finally {
+        } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);            
         }
