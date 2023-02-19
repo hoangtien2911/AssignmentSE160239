@@ -136,8 +136,8 @@ public class ClothesDTO implements Serializable{
 
     @Override
     public String toString() {
-        return "INSERT INTO dbo.Categories VALUES (" + "'" + name + "', " + price + ", " + "'"+ imgPath + "', '" + description + "', " +  status + "," + cateId + ")";
-    }
+        return "ClothesDTO{" + "id=" + id + ", name=" + name + ", price=" + price + ", imgPath=" + imgPath + ", description=" + description + ", status=" + status + ", cateId=" + cateId + '}';
+    }   
 
     @Override
     public boolean equals(Object obj) {

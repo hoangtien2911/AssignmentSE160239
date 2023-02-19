@@ -7,16 +7,26 @@ package tienph.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import tienph.dao.ClothesDAO;
+import tienph.dao.OrderDAO;
+import tienph.dto.ClothesDTO;
+import tienph.dto.OrderDTO;
+import tienph.dto.OrderDetailDTO;
 
 /**
  *
  * @author Hp
  */
 public class DetailOrderServlet extends HttpServlet {
+
+    private final String DETAIL_ORDER_PAGE = "orderDetail.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -29,17 +39,35 @@ public class DetailOrderServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet DetailOrderServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet DetailOrderServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+        String url = DETAIL_ORDER_PAGE;
+        try {
+            //Get parameters            
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            //Get order by order id call DAO
+            OrderDTO orderDto = OrderDAO.getOrderByOrderId(orderId);            
+            //Get list order detail by order id  Call DAO
+            ArrayList<OrderDetailDTO> listDetailOrder = OrderDAO.getAllOrderDetailsById(orderId);            
+            
+            //Create list product have in list detail
+            ArrayList<ClothesDTO> listClothes = new ArrayList<>();
+
+            for (OrderDetailDTO orderDetailDTO : listDetailOrder) {
+                //CALL DAO of clothes and add product to list with each detailID                 
+                ClothesDTO dtoCloth = ClothesDAO.getAClothing(orderDetailDTO.getClothID());                
+                listClothes.add(dtoCloth);
+            }            
+
+            request.setAttribute("ORDER_INFOR", orderDto);
+            request.setAttribute("LIST_DETAIL_ORDER", listDetailOrder);
+            request.setAttribute("LIST_CLOTHES_OF_DETAIL", listClothes);
+            request.setAttribute("SIZE_OF_LIST", listClothes.size());
+        } catch (SQLException e) {
+            log("DetailOrderServlet - SQL: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            log("DetailOrderServlet - ClassNotFound: " + e.getMessage());
+        } finally {
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
     }
 

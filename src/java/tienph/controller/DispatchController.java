@@ -29,8 +29,7 @@ public class DispatchController extends HttpServlet {
     private final String CHECK_OUT_CONTROLLER = "CheckOutServlet";
     private final String PROCESS_REQUEST_CONTROLLER = "ProcessRequestServlet";
     private final String ORDER_HISTORY_CONTROLLER = "OrderHistoryServlet";
-    private final String CANCEL_ORDER_CONTROLLER = "CancelOrderServlet";
-    private final String ORDER_AGAIN_CONTROLLER = "OrderAgainServlet";
+    private final String CHANGE_STATUS_ORDER_CONTROLLER = "ChangeStatusOrderServlet";    
     private final String DETAIL_ORDER_CONTROLLER = "DetailOrderServlet";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -70,10 +69,8 @@ public class DispatchController extends HttpServlet {
                 url = CHECK_OUT_CONTROLLER;
             } else if (button.equals("OrderHistory")) {
                 url = ORDER_HISTORY_CONTROLLER;
-            } else if (button.equals("CancelOrder")) {
-                url = CANCEL_ORDER_CONTROLLER;
-            } else if (button.equals("OrderAgain")) {
-                url = ORDER_AGAIN_CONTROLLER;
+            } else if (button.equals("ChangeStatusOrder")) {
+                url = CHANGE_STATUS_ORDER_CONTROLLER;
             } else if(button.equals("ViewDetailOrder")) {
                 url = DETAIL_ORDER_CONTROLLER;
             }else {

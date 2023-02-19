@@ -49,8 +49,8 @@
         <servlet-class>tienph.controller.OrderHistoryServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>CancelOrderServlet</servlet-name>
-        <servlet-class>tienph.controller.CancelOrderServlet</servlet-class>
+        <servlet-name>ChangeStatusOrderServlet</servlet-name>
+        <servlet-class>tienph.controller.ChangeStatusOrderServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>OrderAgainServlet</servlet-name>
@@ -112,8 +112,8 @@
         <url-pattern>/OrderHistoryServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>CancelOrderServlet</servlet-name>
-        <url-pattern>/CancelOrderServlet</url-pattern>
+        <servlet-name>ChangeStatusOrderServlet</servlet-name>
+        <url-pattern>/ChangeStatusOrderServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>OrderAgainServlet</servlet-name>

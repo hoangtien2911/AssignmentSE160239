@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import tienph.dto.ClothesDTO;
 import tienph.dto.OrderDTO;
+import tienph.dto.OrderDetailDTO;
 import tienph.utils.DBUtils;
 import tienph.utils.MyUtils;
 
@@ -134,6 +135,49 @@ public class OrderDAO implements Serializable {
         return listOrder;
     }
     
+    public static OrderDTO getOrderByOrderId(int orderId)
+                        throws SQLException, ClassNotFoundException{        
+        OrderDTO dto = null;
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            //1. Connect DB
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                //2. Prepare statement String
+                String sql = "SELECT OrderID, OrdDate, shipdate, status,\n"
+                        + " AccID FROM Orders WHERE OrderID = ?";
+                //3. Prepare statement to set SQL
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, orderId);            
+                //4. Execute query
+                rs = stm.executeQuery();
+                while(rs.next()) {
+                    //get field/ column
+                    int orderID = rs.getInt("OrderID");
+                    Date ordDate = rs.getDate("OrdDate");
+                    Date shipdate = rs.getDate("shipdate");
+                    int status = rs.getInt("status");                                                           
+                    int accId = rs.getInt("AccID");
+                    //Create DTO instance
+                    dto = new OrderDTO(orderID, ordDate, shipdate, status, accId);                                        
+                }
+            } //end if connection is existed
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return dto;
+    }
+    
     public static ArrayList<OrderDTO> getAllOrdersByFilter(int accId, int status, Date from, Date to)
                         throws SQLException, ClassNotFoundException{
         ArrayList<OrderDTO> listOrder = null;
@@ -189,6 +233,84 @@ public class OrderDAO implements Serializable {
         return listOrder;
     }
     
+    public static ArrayList<OrderDetailDTO> getAllOrderDetailsById(int orderId)
+                        throws SQLException, ClassNotFoundException{
+        ArrayList<OrderDetailDTO> listOrderDetail = null;
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            //1. Connect DB
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                //2. Prepare statement String
+                String sql = "SELECT DetailId, OrderID, CID, quantity FROM OrderDetails WHERE OrderID = ? ORDER BY DetailId ASC";                
+                //3. Prepare statement to set SQL
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, orderId);                               
+                //4. Execute query
+                rs = stm.executeQuery();
+                while(rs.next()) {
+                    //get field/ column
+                    int detailId = rs.getInt("DetailId");
+                    int orderID = rs.getInt("OrderID");
+                    int clothID = rs.getInt("CID");
+                    int quantity = rs.getInt("quantity");                    
+                    //Create DTO instance
+                    OrderDetailDTO dto = new OrderDetailDTO(detailId, orderID, clothID, quantity);
+                    //add account to list
+                    if (listOrderDetail == null) {
+                        listOrderDetail = new ArrayList<>();
+                    }                    
+                    listOrderDetail.add(dto);
+                }
+            } //end if connection is existed
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return listOrderDetail;
+    }
+    
+    public static boolean changeStatusOrderById(int orderId, int status) 
+            throws SQLException, ClassNotFoundException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            //1. Connect DB
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                //2. Prepare sql statement String
+                String sql = "UPDATE Orders SET status = ? WHERE orderID = ?";
+                //3. Create sql statement to set sql
+                stm = con.prepareStatement(sql);
+                stm.setInt(1, status);
+                stm.setInt(2, orderId);
+                //4. Execute query
+                int row = stm.executeUpdate();
+                //5. Process             
+                if (row > 0) {
+                    return true;
+                } //end if execute success
+            }// end if connection success
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            } 
+        }
+        return false;
+    }       
+    
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         String from = "2023-02-17";
         String to = "2023-02-19";
@@ -196,9 +318,12 @@ public class OrderDAO implements Serializable {
                     Date dateTo = new Date(MyUtils.parse(to).getTime());
         System.out.println(dateFrom);
         System.out.println(dateTo);
-        ArrayList<OrderDTO> li = OrderDAO.getAllOrdersByFilter(2, 0, dateFrom, dateTo);
-        li.forEach((orderDTO) -> {
-            System.out.println(orderDTO.toString());
+//        ArrayList<OrderDTO> li = OrderDAO.getAllOrdersByFilter(2, 0, dateFrom, dateTo);
+        ArrayList<OrderDetailDTO> li = OrderDAO.getAllOrderDetailsById(9);
+        li.forEach((OrderDetailDTO) -> {
+            System.out.println(OrderDetailDTO.toString());
         });
+        
+        System.out.println(OrderDAO.getOrderByOrderId(9).toString());
     }
 }

@@ -47,11 +47,11 @@ public class OrderHistoryServlet extends HttpServlet {
                 String to = request.getParameter("DateTo");                             
                 int status = 0;                
                 if (txtStatus != null) {
-                    if (txtStatus.equals("processing")) {
+                    if (txtStatus.equals("Processing")) {
                         status = 1;
-                    } else if (txtStatus.equals("completed")) {
+                    } else if (txtStatus.equals("Completed")) {
                         status = 2;
-                    } else if (txtStatus.equals("cancel")) {
+                    } else if (txtStatus.equals("Cancel")) {
                         status = 3;
                     }
                 }
