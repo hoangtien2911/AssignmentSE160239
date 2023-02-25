@@ -62,6 +62,13 @@
                                                 </div>                                                    
                                             </div>                                                                                            
                                         </c:if>
+                                        
+                                        <div class="form-check d-flex justify-content-center mb-3">
+                                            <input class="form-check-input me-2" type="checkbox" name="chkRemember" value="ON"/>
+                                            <label class="form-check-label">
+                                                Remember password.
+                                            </label>
+                                        </div>
                                         <div class="pt-1 mb-3 d-flex justify-content-center">
                                             <button class="btn btn-dark btn-lg btn-block" type="submit" name="btAction" value="Login">Login</button>                                            
                                         </div>

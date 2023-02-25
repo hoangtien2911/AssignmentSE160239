@@ -97,9 +97,7 @@
                                         </td>-->
 
                                     <td>
-                                        <c:url var="linkUpdateProductCart" value="DispatchController">
-                                            <c:param name="btAction" value="CartUpdateItem"/>                                            
-                                        </c:url>
+                                        
                                         <form action="DispatchController">
                                             <input name="newQuantity" value="${quantity}" type="number" min="1">
                                             <input type="hidden" name="idProduct" value="${dto.id}" />

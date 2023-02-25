@@ -33,7 +33,7 @@
             <section id="cart-container" class="d-flex align-items-center mt-5 pt-5">
                 <div class="container mt-md-5">
                     <div class="title text-center">
-                        <h2 class="position-relative d-inline-block mb-5">Detail Your Order</h2>
+                        <h2 class="position-relative d-inline-block mb-5">Your Order</h2>
                     </div>
 
                     <form action="DispatchController">

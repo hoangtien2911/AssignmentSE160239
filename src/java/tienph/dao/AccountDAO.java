@@ -31,7 +31,7 @@ public class AccountDAO implements Serializable{
             if (con != null) {
                 //2. Prepare sql statement String
                 String sql = "SELECT accID, email, password, fullname, phone,"
-                    + " status, role FROM dbo.Accounts WHERE status = 1 AND"
+                    + " status, role, token FROM dbo.Accounts WHERE status = 1 AND"
                     + " email = ? AND password = ? COLLATE Latin1_General_CS_AS";
                 //3. Create sql statement to set sql
                 stm = con.prepareStatement(sql);
@@ -49,8 +49,9 @@ public class AccountDAO implements Serializable{
                     String Phone = rs.getString("phone");
                     int Status = rs.getInt("status");
                     int Role = rs.getInt("role");
+                    String Token = rs.getString("token");
                     acc = new AccountDTO(AccID, Email, Password, Fullname,
-                                                Status, Phone, Role);
+                                                Phone, Status, Role, Token);
                 }
             } // end if connection existed        
         } finally {
@@ -65,7 +66,54 @@ public class AccountDAO implements Serializable{
             }
         }
         return acc;
-    }       
+    } 
+    
+    public static AccountDTO getAccountByToken(String token) 
+        throws ClassNotFoundException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        AccountDTO acc = null;
+        try {
+            //1. Connect DB
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                //2. Prepare sql statement String
+                String sql = "SELECT accID, email, password, fullname, phone,"
+                    + " status, role, token FROM dbo.Accounts WHERE token = ?";
+                //3. Create sql statement to set sql
+                stm = con.prepareStatement(sql);
+                stm.setString(1, token);                
+                //4. Execute query
+                rs = stm.executeQuery();
+                //5. Process
+                if (rs != null && rs.next()){
+                    //get field/ column
+                    int AccID = rs.getInt("accID");
+                    String Email = rs.getString("email");
+                    String Password = rs.getString("password");
+                    String Fullname = rs.getString("fullname");
+                    String Phone = rs.getString("phone");
+                    int Status = rs.getInt("status");
+                    int Role = rs.getInt("role");
+                    String Token = rs.getString("token");
+                    acc = new AccountDTO(AccID, Email, Password, Fullname,
+                                            Phone, Status, Role, Token);
+                }
+            } // end if connection existed        
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }            
+            if (con != null) {
+                con.close();
+            }
+        }
+        return acc;
+    }  
     
     public static ArrayList<AccountDTO> getAccounts() 
             throws ClassNotFoundException, SQLException{
@@ -79,7 +127,7 @@ public class AccountDAO implements Serializable{
             if (con != null) {
                 //2.Prepare statement String
                 String sql = "SELECT accID, email, password, fullname, phone,"
-                        + " status, role FROM dbo.Accounts";
+                        + " status, role, token FROM dbo.Accounts";
                 //3. Create statement to set sql
                 stm = con.prepareStatement(sql);
                 //4. Execute query
@@ -94,8 +142,10 @@ public class AccountDAO implements Serializable{
                     String Phone = rs.getString("phone");
                     int Status = rs.getInt("status");
                     int Role = rs.getInt("role");
+                    String Token = rs.getString("token");                    
                     //Create DTO instance
-                    AccountDTO dto = new AccountDTO(AccID, Email, Password, Fullname, Status, Phone, Role);
+                    AccountDTO dto = new AccountDTO(AccID, Email, Password, Fullname,
+                                                    Phone, Status, Role, Token);
                     //add account to list
                     if (accounts == null) {
                         accounts = new ArrayList<>();
@@ -194,7 +244,7 @@ public class AccountDAO implements Serializable{
             con = DBUtils.makeConnection();
             if (con != null) {
                 //2. Prepare statement String
-                String sql = "INSERT INTO dbo.Accounts VALUES (?, ?, ?, ?, ?, ?)";
+                String sql = "INSERT INTO dbo.Accounts VALUES (?, ?, ?, ?, ?, ?, ?)";
                 //3. Prepare statement to set sql
                 stm = con.prepareStatement(sql);
                 stm.setString(1, newEmail);
@@ -203,6 +253,7 @@ public class AccountDAO implements Serializable{
                 stm.setString(4, newPhone);
                 stm.setInt(5, newStatus);
                 stm.setInt(6, newRole);
+                stm.setString(7, "");
                 //4. Execute query 
                 int row = stm.executeUpdate();
                 if (row > 0) {
@@ -219,4 +270,37 @@ public class AccountDAO implements Serializable{
         }
         return false;
     }
+    
+    public static boolean updateToken(String email, String token) 
+            throws ClassNotFoundException, SQLException{ 
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            //1. Connect DB
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                //2. Prepare statement String
+                String sql = "UPDATE dbo.Accounts SET token = ? WHERE email = ?";
+                //3. Prepare statement to set sql
+                stm = con.prepareStatement(sql);
+                stm.setString(1, token);
+                stm.setString(2, email);                
+                //4. Execute query 
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                } // end if execute success
+            }// end if connection is existed
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+    
+    
 }

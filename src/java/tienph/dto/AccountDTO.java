@@ -16,22 +16,24 @@ public class AccountDTO implements Serializable {
     private String email;
     private String password;
     private String fullname;
-    private int status;
     private String phone;
+    private int status;    
     private int role;
+    private String token;
 
     public AccountDTO() {
     }
 
-    public AccountDTO(int accID, String email, String password, String fullname, int status, String phone, int role) {
+    public AccountDTO(int accID, String email, String password, String fullname, String phone, int status, int role, String token) {
         this.accID = accID;
         this.email = email;
         this.password = password;
         this.fullname = fullname;
-        this.status = status;
         this.phone = phone;
+        this.status = status;
         this.role = role;
-    }
+        this.token = token;
+    }    
 
     /**
      * @return the accID
@@ -129,10 +131,26 @@ public class AccountDTO implements Serializable {
      */
     public void setRole(int role) {
         this.role = role;
+    }                      
+
+    /**
+     * @return the token
+     */
+    public String getToken() {
+        return token;
+    }
+
+    /**
+     * @param token the token to set
+     */
+    public void setToken(String token) {
+        this.token = token;
     }
 
     @Override
     public String toString() {
-        return "AccountDTO{" + "accID=" + accID + ", email=" + email + ", password=" + password + ", fullname=" + fullname + ", status=" + status + ", phone=" + phone + ", role=" + role + '}';
-    }               
+        return "AccountDTO{" + "accID=" + accID + ", email=" + email + ", password=" + password + ", fullname=" + fullname + ", status=" + status + ", phone=" + phone + ", role=" + role + ", token=" + token + '}';
+    }
+    
+    
 }

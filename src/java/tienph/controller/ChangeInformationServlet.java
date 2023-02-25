@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import tienph.dao.AccountDAO;
 import tienph.dto.AccountDTO;
 import tienph.dto.AccountInsertError;
+import tienph.utils.SecurityUtils;
 
 /**
  *
@@ -69,7 +70,7 @@ public class ChangeInformationServlet extends HttpServlet {
                 foundError = true;
                 errors.setConfirmNotMatch("Confirm did not match password."
                         + " Please try again.");
-            } else if (!txtOldPassword.equals(account.getPassword())) {
+            } else if (!SecurityUtils.getSecurePassword(txtOldPassword).equals(account.getPassword())) {                
                 foundError = true;
                 errors.setPasswordOldNotMatch("Old password did not match."
                         + " Please try again.");                
@@ -77,8 +78,9 @@ public class ChangeInformationServlet extends HttpServlet {
             if (foundError) {
                 request.setAttribute("INSERT_ERRORS", errors);
             } else {
-                //2. Insert to DB
-                boolean result = AccountDAO.updateAccount(account.getEmail(), txtNewPassword, txtNewFullname, txtNewPhone);
+                //2. Insert to DB                
+                boolean result = AccountDAO.updateAccount(account.getEmail(),
+                        SecurityUtils.getSecurePassword(txtNewPassword), txtNewFullname, txtNewPhone);
                 if (result) {
                     //transfer to login page
                     url = LOGIN_PAGE;

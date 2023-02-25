@@ -10,11 +10,16 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import tienph.dao.AccountDAO;
 import tienph.dao.ClothesDAO;
+import tienph.dto.AccountDTO;
 import tienph.dto.ClothesDTO;
+import tienph.utils.MyUtils;
 
 /**
  *
@@ -37,6 +42,26 @@ public class ProcessRequestServlet extends HttpServlet {
         String url = HOME_PAGE;
         try {
             //1. Call DAO
+            Cookie[] cookies = request.getCookies();
+            String token = "";
+            if (cookies != null) {
+                for (Cookie cookie : cookies) {
+                    if (cookie.getName().equals("token")) {
+                        token = cookie.getValue();
+                    }
+                }
+            }
+            AccountDTO account = AccountDAO.getAccountByToken(token);
+            if(account != null) {
+                HttpSession session = request.getSession();
+                if (account.getRole() == 1) {
+                    
+                } else {
+                    session.setAttribute("USERNAME", MyUtils.splitFullname(account.getFullname()));
+                    session.setAttribute("ACCOUNT_USER", account);
+                }                
+            }
+            
             ArrayList<ClothesDTO> listClothes = ClothesDAO.getAllClothes();
             ArrayList<ClothesDTO> listSpecial = ClothesDAO.getClothesByCategory("special");
             request.setAttribute("LIST_SPECIAL", listSpecial);

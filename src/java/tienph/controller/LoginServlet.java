@@ -6,10 +6,14 @@
 package tienph.controller;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.UUID;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -18,6 +22,8 @@ import tienph.dao.AccountDAO;
 import tienph.dao.ClothesDAO;
 import tienph.dto.AccountDTO;
 import tienph.dto.ClothesDTO;
+import tienph.utils.MyUtils;
+import tienph.utils.SecurityUtils;
 
 /**
  *
@@ -42,33 +48,33 @@ public class LoginServlet extends HttpServlet {
         String url = INVALID_PAGE;
         //1. get Parameters
         String email = request.getParameter("txtEmail");
-        String password = request.getParameter("txtPassword");         
-        try {
+        String password = request.getParameter("txtPassword");      
+        String chkRemember = request.getParameter("chkRemember");
+        try {            
+            String hashedPassword = SecurityUtils.getSecurePassword(password);               
             //2. Call DAO
-            AccountDTO acc = AccountDAO.getAccount(email, password);
+            AccountDTO acc = AccountDAO.getAccount(email, hashedPassword);
             if (acc != null) {
                 HttpSession session = request.getSession();
                 //ADMIN
+                if (chkRemember != null) {
+                    String token = UUID.randomUUID().toString();
+                    AccountDAO.updateToken(email, token);
+                    Cookie cookie = new Cookie("token", token);
+                    cookie.setMaxAge(60 * 60 * 24);
+                    response.addCookie(cookie);
+                }
                 if(acc.getRole() ==  1) {
                     session.setAttribute("ACCOUNT_ADMIN", acc);
                     url = ADMIN_PAGE;
                 }               
                 //USER
-                else {                    
-                    String[] splitFullName = acc.getFullname().split(" ");
-                    int count = 0;                    
-                    String name = "";
-                    for (String word : splitFullName) {
-                        count++;
-                        if (count > splitFullName.length / 2) {
-                            name = name + " " + word;
-                        }
-                    }
+                else {                                        
                     ArrayList<ClothesDTO> listClothes = ClothesDAO.getAllClothes();
                     ArrayList<ClothesDTO> listSpecial = ClothesDAO.getClothesByCategory("special");
                     request.setAttribute("LIST_SPECIAL", listSpecial);
                     request.setAttribute("LIST_CLOTHES", listClothes);
-                    session.setAttribute("USERNAME", name.trim());
+                    session.setAttribute("USERNAME", MyUtils.splitFullname(acc.getFullname()));
                     session.setAttribute("ACCOUNT_USER", acc);
                     url = HOME_PAGE;
                 }
@@ -79,7 +85,7 @@ public class LoginServlet extends HttpServlet {
         } catch (SQLException e) {
             log("LoginServlet - SQL: " + e.getMessage());
         } catch (ClassNotFoundException e) {
-            log("LoginServlet - ClassNotFound" + e.getMessage());
+            log("LoginServlet - ClassNotFound" + e.getMessage());        
         } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);            

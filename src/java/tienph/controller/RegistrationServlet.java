@@ -6,7 +6,6 @@
 package tienph.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tienph.dao.AccountDAO;
 import tienph.dto.AccountInsertError;
+import tienph.utils.SecurityUtils;
 
 /**
  *
@@ -41,7 +41,7 @@ public class RegistrationServlet extends HttpServlet {
         String confirm = request.getParameter("txtConfirm");
         String fullname = request.getParameter("txtFullname");
         String phone = request.getParameter("txtPhone");
-        String chkAgree = request.getParameter("chkAgree");
+        String chkAgree = request.getParameter("chkAgree");        
         AccountInsertError errors = new AccountInsertError();
         boolean foundError = false;
         String regexEmail = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";                
@@ -79,8 +79,9 @@ public class RegistrationServlet extends HttpServlet {
             if (foundError) {
                 request.setAttribute("INSERT_ERRORS", errors);
             } else {
-                //2. Insert to DB
-                boolean result = AccountDAO.insertAccount(email, password, fullname, phone, 1, 0);
+                //2. Insert to DB             
+                String hashedPassword = SecurityUtils.getSecurePassword(password);                
+                boolean result = AccountDAO.insertAccount(email, hashedPassword, fullname, phone, 1, 0);
                 if (result) {
                     //transfer to login page
                     url = LOGIN_PAGE;

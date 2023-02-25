@@ -8,6 +8,7 @@ package tienph.controller;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -17,8 +18,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Hp
  */
-public class LogoutServlet extends HttpServlet {
-    private final String HOME_PAGE = "home.jsp";
+public class LogoutServlet extends HttpServlet {    
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -31,10 +31,12 @@ public class LogoutServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        String url = HOME_PAGE;
+        response.setContentType("text/html;charset=UTF-8");        
         try {
-            HttpSession session = request.getSession();
+            HttpSession session = request.getSession();            
+            Cookie cookie = new Cookie("token", "");           
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
             session.invalidate();            
         } finally {
             response.sendRedirect("DispatchController");
