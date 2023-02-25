@@ -21,7 +21,7 @@ import tienph.dto.ClothesDTO;
  * @author Hp
  */
 public class ClothingDetailServlet extends HttpServlet {
-    private final String CLOTHING_DETAIL_PAGE = "clothingDetail.jsp";
+    private final String CLOTHING_DETAIL_PAGE = "./user/clothingDetail.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

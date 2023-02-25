@@ -26,7 +26,7 @@ import tienph.dto.OrderDetailDTO;
  */
 public class DetailOrderServlet extends HttpServlet {
 
-    private final String DETAIL_ORDER_PAGE = "orderDetail.jsp";
+    private final String DETAIL_ORDER_PAGE = "./user/orderDetail.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.

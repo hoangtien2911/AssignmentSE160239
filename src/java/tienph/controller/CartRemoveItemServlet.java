@@ -22,7 +22,7 @@ import tienph.dto.ClothesDTO;
  * @author Hp
  */
 public class CartRemoveItemServlet extends HttpServlet {
-    private final String CART_DETAIL_PAGE = "cartDetail.jsp";
+    private final String CART_DETAIL_PAGE = "./user/cartDetail.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>

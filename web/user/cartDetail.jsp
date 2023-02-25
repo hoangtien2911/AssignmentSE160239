@@ -11,19 +11,12 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cart</title>
-    <!-- Fontawesome cdn -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Bootstrap css -->
-    <link rel="stylesheet" href="./bootstrap-5.0.2-dist/css/bootstrap.min.css">
-
-    <!-- Custom css -->
-    <link rel="stylesheet" href="./css/main.css">
+    <title>Cart Detail</title>
+    
 </head>
 <body>
     <!-- Navbar -->
-    <%@include file="header.jsp" %>
+    <%@include file="../common/header.jsp" %>
     <!-- End of navbar -->
 
 
@@ -65,7 +58,7 @@
                                                 <c:param name="productId" value="${dto.id}"/>
                                             </c:url>
                                             <a href="${clothingDetailLink}">
-                                                <img class="img-fluid" src="./${dto.imgPath}" alt="">
+                                                <img class="img-fluid" src="${url}/${dto.imgPath}" alt="">
                                             </a>
                                             <div class="text-md-start">
                                                 <a href="${clothingDetailLink}" class="text-decoration-none">
@@ -98,7 +91,7 @@
 
                                     <td>
                                         
-                                        <form action="DispatchController">
+                                        <form action="${url}/DispatchController">
                                             <input name="newQuantity" value="${quantity}" type="number" min="1">
                                             <input type="hidden" name="idProduct" value="${dto.id}" />
                                             <button type="submit" name="btAction" value="CartUpdateItem" class="btn btn-search fs-5" title="Update quantity">
@@ -150,7 +143,7 @@
                     </div>
 
                     <div class="d-flex justify-content-end">
-                        <form action="DispatchController">
+                        <form action="${url}/DispatchController">
                             <button type="submit" name="btAction" value="CheckOut" class="btn mt-2">CHECK OUT</button>
                         </form>
                         
@@ -173,18 +166,8 @@
     
 
     <!-- Footer -->
-    <%@include file="footer.jsp" %>
-    <!-- End of Footer -->
-
-
-    <!-- Jquery -->
-    <script src="./js/jquery-3.6.3.js"></script>
-    <!-- Isotope -->
-    <script src="./js/isotope.pkgd.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="./bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
-    <!-- Custom js -->
-    <script src="./js/script.js"></script>
+    <%@include file="../common/footer.jsp" %>
+    <!-- End of Footer --> 
 
 </body>
 </html>

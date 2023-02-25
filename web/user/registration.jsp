@@ -6,6 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="url" value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,16 +14,15 @@
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Register</title>
-
+        <title>Register</title>       
         <!-- Fontawesome cdn -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <!-- Bootstrap css -->
-        <link rel="stylesheet" href="./bootstrap-5.0.2-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="${url}/bootstrap-5.0.2-dist/css/bootstrap.min.css">
 
         <!-- Custom css -->
-        <link rel="stylesheet" href="./css/main.css">
+        <link rel="stylesheet" href="${url}/css/main.css">
     </head>
 
     <body style="background-color: #1F8A70;">
@@ -38,7 +38,7 @@
                                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                     <div class="card-body p-4 p-lg-5 text-black">
                                         <div class="login-brand d-flex justify-content-center align-items-center mb-3 pb-1">
-                                            <a href="index.html" class="text-dark text-decoration-none"><span class="h3 text-uppercase fw-lighter">Chinn Clothings</span></a>
+                                            <a href="${url}/user/home.jsp" class="text-dark text-decoration-none"><span class="h3 text-uppercase fw-lighter">Chinn Clothings</span></a>
                                         </div>
 
                                         <form action="DispatchController" method="POST">      
@@ -63,7 +63,7 @@
                                                     </div>                                                    
                                                 </div>    
                                             </c:if>    
-                                            
+
 
                                             <div class="d-flex flex-row align-items-center mb-2">
                                                 <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
@@ -78,7 +78,7 @@
                                                     </div>                                                    
                                                 </div>    
                                             </c:if>       
-                                            
+
 
                                             <div class="d-flex flex-row align-items-center mb-2">
                                                 <i class="fas fa-key fa-lg me-3 fa-fw"></i>
@@ -93,7 +93,7 @@
                                                     </div>                                                    
                                                 </div>    
                                             </c:if>      
-                                            
+
 
                                             <div class="d-flex flex-row align-items-center mb-2">
                                                 <i class="fas fa-user fa-lg me-3 fa-fw"></i>
@@ -136,7 +136,7 @@
                                                     </div>                                                    
                                                 </div>    
                                             </c:if>        
-                                            
+
 
                                             <div class="d-flex justify-content-center mx-4 mb-2 mb-lg-3">                                            
                                                 <button class="btn btn-dark btn-lg btn-block" type="submit" name="btAction" value="Register">Register</button>
@@ -146,7 +146,7 @@
                                         <p class="pb-lg-2">Do have an account?</p>
 
                                         <div class=" my-2 text-center">                                            
-                                            <a type="button" class="btn" href="login.html">Login here</a>                                            
+                                            <a type="button" class="btn" href="${url}/user/login.html">Login here</a>                                            
                                         </div>
 
                                     </div>
@@ -160,13 +160,13 @@
 
 
         <!-- Jquery -->
-        <script src="./js/jquery-3.6.3.js"></script>
+        <script src="${url}/js/jquery-3.6.3.js"></script>
         <!-- Isotope -->
-        <script src="./js/isotope.pkgd.min.js"></script>
+        <script src="${url}/js/isotope.pkgd.min.js"></script>
         <!-- Bootstrap js -->
-        <script src="./bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
+        <script src="${url}/bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
         <!-- Custom js -->
-        <script src="./js/script.js"></script>
+        <script src="${url}/js/script.js"></script>
     </body>
 
 </html>

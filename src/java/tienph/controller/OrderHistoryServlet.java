@@ -25,7 +25,7 @@ import tienph.utils.MyUtils;
  * @author Hp
  */
 public class OrderHistoryServlet extends HttpServlet {
-    private final String ORDER_HISTORY_PAGE = "orderHistory.jsp";
+    private final String ORDER_HISTORY_PAGE = "./user/orderHistory.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *

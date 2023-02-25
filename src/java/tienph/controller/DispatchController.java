@@ -17,7 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  * @author Hp
  */
 public class DispatchController extends HttpServlet {
-    private final String HOME_PAGE = "home.jsp";    
+    private final String HOME_PAGE = "./user/home.jsp";    
     private final String LOGIN_CONTROLLER = "LoginServlet";
     private final String LOG_OUT_CONTROLLER = "LogoutServlet";
     private final String REGISTER_CONTROLLER = "RegistrationServlet";

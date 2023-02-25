@@ -3,9 +3,9 @@
     Created on : Feb 15, 2023, 12:26:28 AM
     Author     : Hp
 --%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="url" value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -17,17 +17,17 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
         <!-- Bootstrap css -->
-        <link rel="stylesheet" href="./bootstrap-5.0.2-dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="${url}/bootstrap-5.0.2-dist/css/bootstrap.min.css">
 
         <!-- Custom css -->
-        <link rel="stylesheet" href="./css/main.css">
+        <link rel="stylesheet" href="${url}/css/main.css">
     </head>
     <body>
         <!-- Navbar -->
         <nav class="navbar navbar-expand-lg navbar-light bg-white py-3 fixed-top">
             <div class="container-fluid mx-lg-5">
-                <a class="navbar-brand d-flex justify-content-between align-items-center order-lg-0" href="DispatchController">
-                    <img src="images/shopping-bag-icon.png" alt="site icon">
+                <a class="navbar-brand d-flex justify-content-between align-items-center order-lg-0" href="${url}/DispatchController">
+                    <img src="${url}/images/shopping-bag-icon.png" alt="site icon">
                     <span class="text-uppercase fw-lighter ms-2">
                         &nbsp;&nbsp;&nbsp;&nbsp;Chinn <br/> CLothings
                     </span>
@@ -36,7 +36,7 @@
                     <ul class="list-unstyled m-0 d-flex">
                         <li>
                             <button type = "button" class = "btn position-relative mx-2">                            
-                                <a href="cartDetail.jsp" class="text-dark"><i class = "fa fa-shopping-cart"></i></a>
+                                <a href="${url}/user/cartDetail.jsp" class="text-dark"><i class = "fa fa-shopping-cart"></i></a>
                                     <c:set var="cartSize" value="${sessionScope.CART_SIZE}"/>
                                     <c:if test="${cartSize gt 0}">
                                     <span class = "position-absolute top-0 start-100 translate-middle badge bg-primary">${cartSize}</span>
@@ -56,7 +56,7 @@
                         <c:if test="${empty accountUser}">
                             <li>
                                 <button type = "button" class = "btn position-relative mx-2">
-                                    <a href="login.html" class="text-dark"><i class="fa-solid fa-user"></i></a>                                     
+                                    <a href="${url}/user/login.html" class="text-dark"><i class="fa-solid fa-user"></i></a>                                     
                                 </button> 
                             </li> 
                         </c:if>
@@ -68,13 +68,13 @@
                                 <span class="user-name my-2">${username}</span>
                                 <ul class="user-menu list-unstyled">
                                     <li class="user-menu-item">
-                                        <a href="changeProfile.jsp" class="text-decoration-none text-dark">My Account</a>
+                                        <a href="${url}/user/changeProfile.jsp" class="text-decoration-none text-dark">My Account</a>
                                     </li>
                                     <li class="user-menu-item">
                                         <c:url var="linkOrderHistory" value="DispatchController">
                                             <c:param name="btAction" value="OrderHistory"/>
                                         </c:url>
-                                        <a href="${linkOrderHistory}" class="text-decoration-none text-dark">My Purchase</a>
+                                        <a href="${url}/${linkOrderHistory}" class="text-decoration-none text-dark">My Purchase</a>
                                     </li>
 
                                     <!--Logout-->
@@ -82,7 +82,7 @@
                                         <c:url var="linkLogout" value="DispatchController">
                                             <c:param name="btAction" value="Logout"/>
                                         </c:url>
-                                        <a href="${linkLogout}" class="text-decoration-none text-dark">Logout</a>                                        
+                                        <a href="${url}/${linkLogout}" class="text-decoration-none text-dark">Logout</a>                                        
                                     </li>    
                                 </ul>
                             </li>
@@ -148,13 +148,13 @@
         <!-- End of navbar -->  
 
         <!-- Jquery -->
-        <script src="./js/jquery-3.6.3.js"></script>
+        <script src="${url}/js/jquery-3.6.3.js"></script>
         <!-- Isotope -->
-        <script src="./js/isotope.pkgd.min.js"></script>
+        <script src="${url}/js/isotope.pkgd.min.js"></script>
         <!-- Bootstrap js -->
-        <script src="./bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
+        <script src="${url}/bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
         <!-- Custom js -->
-        <script src="./js/script.js"></script>
+        <script src="${url}/js/script.js"></script>
 
     </body>
 </html>

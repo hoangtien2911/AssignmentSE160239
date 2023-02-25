@@ -12,19 +12,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chinn Clothing</title>
-    <!-- Fontawesome cdn -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
-    <!-- Bootstrap css -->
-    <link rel="stylesheet" href="./bootstrap-5.0.2-dist/css/bootstrap.min.css">
-
-    <!-- Custom css -->
-    <link rel="stylesheet" href="./css/main.css">
+    <title>Clothing Detail</title>    
 </head>
 <body>
     <!-- Navbar -->
-    <%@include file="header.jsp" %>    
+    <%@include file="../common/header.jsp" %>    
     <!-- End of navbar -->
     
     <!-- Product details -->
@@ -97,17 +89,8 @@
     <!-- End product details -->
 
     <!-- Footer -->
-    <%@include file="footer.jsp" %>
-    <!--End of footer-->
-
-    <!-- Jquery -->
-    <script src="./js/jquery-3.6.3.js"></script>
-    <!-- Isotope -->
-    <script src="./js/isotope.pkgd.min.js"></script>
-    <!-- Bootstrap js -->
-    <script src="./bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
-    <!-- Custom js -->
-    <script src="./js/script.js"></script>
+    <%@include file="../common/footer.jsp" %>
+    <!--End of footer-->   
 
 </body>
 </html>

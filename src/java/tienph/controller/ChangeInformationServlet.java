@@ -25,8 +25,8 @@ import tienph.utils.SecurityUtils;
  */
 public class ChangeInformationServlet extends HttpServlet {
 
-    private final String CHANGE_PROFILE_PAGE = "changeProfile.jsp";
-    private final String LOGIN_PAGE = "login.html";
+    private final String CHANGE_PROFILE_PAGE = "./user/changeProfile.jsp";
+    private final String LOGIN_PAGE = "./user/login.jsp";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -82,7 +82,8 @@ public class ChangeInformationServlet extends HttpServlet {
                 boolean result = AccountDAO.updateAccount(account.getEmail(),
                         SecurityUtils.getSecurePassword(txtNewPassword), txtNewFullname, txtNewPhone);
                 if (result) {
-                    //transfer to login page
+                    //transfer to login page                    
+                    session.invalidate();
                     url = LOGIN_PAGE;
                 } //end account created
             }

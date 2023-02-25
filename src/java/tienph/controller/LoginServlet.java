@@ -6,8 +6,6 @@
 package tienph.controller;
 
 import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -30,9 +28,9 @@ import tienph.utils.SecurityUtils;
  * @author Hp
  */
 public class LoginServlet extends HttpServlet {
-    private final String HOME_PAGE = "home.jsp";
-    private final String ADMIN_PAGE = "admin.jsp";
-    private final String INVALID_PAGE = "login.jsp";
+    private final String HOME_PAGE = "./user/home.jsp";
+    private final String ADMIN_PAGE = "./user/admin.jsp";
+    private final String INVALID_PAGE = "./user/login.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

@@ -26,7 +26,7 @@ import tienph.utils.MyUtils;
  * @author Hp
  */
 public class ProcessRequestServlet extends HttpServlet {
-    private final String HOME_PAGE = "home.jsp";
+    private final String HOME_PAGE = "./user/home.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.

@@ -24,7 +24,7 @@ import tienph.dto.ClothesDTO;
  * @author Hp
  */
 public class CheckOutServlet extends HttpServlet {
-    private final String LOGIN_PAGE = "login.html";
+    private final String LOGIN_PAGE = "./user/login.html";
     private final String ORDER_PAGE = "DispatchController?btAction=OrderHistory" ;
 
     /**
