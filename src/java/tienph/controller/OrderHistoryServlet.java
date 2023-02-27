@@ -59,8 +59,7 @@ public class OrderHistoryServlet extends HttpServlet {
                 if ((from != null && !from.isEmpty()) && (to != null && !to.isEmpty())) {
                     Date dateFrom = new Date(MyUtils.parse(from).getTime());
                     Date dateTo = new Date(MyUtils.parse(to).getTime());
-                    System.out.println(dateFrom);
-                    System.out.println(dateTo);
+                    
                     ArrayList<OrderDTO> listOrder = OrderDAO.getAllOrdersByFilter(account.getAccID(), status, dateFrom, dateTo);
                     if (listOrder != null) {
                         request.setAttribute("LIST_ORDER", listOrder);

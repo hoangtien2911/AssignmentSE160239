@@ -7,20 +7,25 @@ package tienph.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import tienph.dao.OrderDAO;
+import tienph.dto.OrderDTO;
+import tienph.utils.MyUtils;
 
 /**
  *
  * @author Hp
  */
-public class ChangeStatusOrderServlet extends HttpServlet {
+public class UpdateOrderAdminServlet extends HttpServlet {
 
-    private final String ORDER_HISTORY_PAGE = "DispatchController?btAction=OrderHistory";
+    private final String MANAGE_ORDERS_PAGE = "AdminController?btAction=ViewOrders";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -33,16 +38,34 @@ public class ChangeStatusOrderServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ORDER_HISTORY_PAGE;
+        String url = MANAGE_ORDERS_PAGE;
         try {
             int orderId = Integer.parseInt(request.getParameter("orderId"));
-            int status = Integer.parseInt(request.getParameter("status"));
+            String newShipDate = request.getParameter("newShipDate");
+            String status = request.getParameter("newStatus");
+            int newStatus = 1;
+            if (status != null) {
+                if (status.equals("Processing")) {
+                    newStatus = 1;
+                } else if (status.equals("Completed")) {
+                    newStatus = 2;
+                } else if (status.equals("Cancel")) {
+                    newStatus = 3;
+                }
+            }
+
+            //get Para for rewriting url
             String lastFilterStatus = request.getParameter("lastFilterStatus");
             String lastFilterDateFrom = request.getParameter("lastFilterDateFrom");
             String lastFilterDateTo = request.getParameter("lastFilterDateTo");
-            if ((lastFilterStatus != null && !lastFilterStatus.isEmpty())
+            //Call DAO
+            Date deliveryDate = new Date(MyUtils.parse(newShipDate).getTime());
+            OrderDAO.updateOrderById(orderId, deliveryDate, newStatus);
+            if (
+                    (lastFilterStatus != null && !lastFilterStatus.isEmpty())
                     && (lastFilterDateFrom != null && !lastFilterDateFrom.isEmpty())
-                    && (lastFilterDateTo != null && !lastFilterDateTo.isEmpty())) {
+                    && (lastFilterDateTo != null && !lastFilterDateTo.isEmpty())
+                ) {
                 url = url + "&DateFrom=" + lastFilterDateFrom + "&DateTo=" + lastFilterDateTo + "&txtStatus=" + lastFilterStatus;
             } else if (
                     (lastFilterStatus != null && !lastFilterStatus.isEmpty())
@@ -51,12 +74,10 @@ public class ChangeStatusOrderServlet extends HttpServlet {
                 ) {                
                 url = url + "&txtStatus=" + lastFilterStatus;
             }
-            //Call DAO
-            OrderDAO.changeStatusOrderById(orderId, status);
         } catch (SQLException e) {
-            log("CancelOrderServlet - SQL: " + e.getMessage());
+            log("ViewOrdersServlet - SQL: " + e.getMessage());
         } catch (ClassNotFoundException e) {
-            log("CancelOrderServlet - ClassNotFound: " + e.getMessage());
+            log("ViewOrdersServlet - ClassNotFound" + e.getMessage());
         } finally {
             response.sendRedirect(url);
         }

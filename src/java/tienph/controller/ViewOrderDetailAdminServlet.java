@@ -7,23 +7,27 @@ package tienph.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import tienph.utils.SecurityUtils;
+import tienph.dao.ClothesDAO;
+import tienph.dao.OrderDAO;
+import tienph.dto.ClothesDTO;
+import tienph.dto.OrderDTO;
+import tienph.dto.OrderDetailDTO;
 
 /**
  *
  * @author Hp
  */
-public class LogoutServlet extends HttpServlet {    
-
+public class ViewOrderDetailAdminServlet extends HttpServlet {
+    private final String DETAIL_ORDER_PAGE = "./admin/manageOrderDetail.jsp";
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -32,15 +36,36 @@ public class LogoutServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");        
+        response.setContentType("text/html;charset=UTF-8");
+        String url = DETAIL_ORDER_PAGE;
         try {
-            HttpSession session = request.getSession();            
-            Cookie cookie = new Cookie("token", SecurityUtils.getSecurePassword("changeNewToken"));            
-//            cookie.setMaxAge(0);
-            response.addCookie(cookie);
-            session.invalidate();            
+            //Get parameters            
+            int orderId = Integer.parseInt(request.getParameter("orderId"));
+            //Get order by order id call DAO
+            OrderDTO orderDto = OrderDAO.getOrderByOrderId(orderId);            
+            //Get list order detail by order id  Call DAO
+            ArrayList<OrderDetailDTO> listDetailOrder = OrderDAO.getAllOrderDetailsById(orderId);            
+            
+            //Create list product have in list detail
+            ArrayList<ClothesDTO> listClothes = new ArrayList<>();
+
+            for (OrderDetailDTO orderDetailDTO : listDetailOrder) {
+                //CALL DAO of clothes and add product to list with each detailID                 
+                ClothesDTO dtoCloth = ClothesDAO.getAClothing(orderDetailDTO.getClothID());                
+                listClothes.add(dtoCloth);
+            }            
+
+            request.setAttribute("ORDER_INFOR", orderDto);
+            request.setAttribute("LIST_DETAIL_ORDER", listDetailOrder);
+            request.setAttribute("LIST_CLOTHES_OF_DETAIL", listClothes);
+            request.setAttribute("SIZE_OF_LIST", listClothes.size());
+        } catch (SQLException e) {
+            log("ViewOrderDetailAdminServlet - SQL: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            log("ViewOrderDetailAdminServlet - ClassNotFound: " + e.getMessage());
         } finally {
-            response.sendRedirect("DispatchController");
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
     }
 

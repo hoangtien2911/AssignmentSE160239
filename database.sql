@@ -5,11 +5,12 @@ GO
 create table Accounts(
     accID int identity(1,1)primary key,
     email varchar(30)  unique,
-    password varchar(30),
+    password varchar(50),
     fullname varchar(30),
     phone varchar(12),
     status int check(status =1 or status=0),-- 1:active; 0:inactive
-    role int check(role=1 or role=0)    --:admin, 0:user
+    role int check(role=1 or role=0),    --:admin, 0:user
+	token varchar(50)
 )
 GO
 create table Categories(
@@ -42,8 +43,8 @@ create table OrderDetails(
     quantity int check(quantity>=1),	
 )
 GO
-	INSERT INTO dbo.Accounts VALUES ('hoangtienbmt2911@gmail.com', '12345678', 'Pham Hoang Tien', '0868363802', 1, 1)
-	INSERT INTO dbo.Accounts VALUES ('donguyenngochanlop9h@gmail.com', '00000000', 'Do Nguyen Ngoc Han', '1234567890', 1, 0)
+	INSERT INTO dbo.Accounts VALUES ('hoangtienbmt2911@gmail.com', '12345678', 'Pham Hoang Tien', '0868363802', 1, 1, '')
+	INSERT INTO dbo.Accounts VALUES ('donguyenngochanlop9h@gmail.com', '00000000', 'Do Nguyen Ngoc Han', '1234567890', 1, 0, '')
 	INSERT INTO dbo.Categories VALUES ('blouse')
 	INSERT INTO dbo.Categories VALUES ('shirt')
 	INSERT INTO dbo.Categories VALUES ('dress')

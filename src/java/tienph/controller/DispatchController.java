@@ -31,7 +31,7 @@ public class DispatchController extends HttpServlet {
     private final String PROCESS_REQUEST_CONTROLLER = "ProcessRequestServlet";
     private final String ORDER_HISTORY_CONTROLLER = "OrderHistoryServlet";
     private final String CHANGE_STATUS_ORDER_CONTROLLER = "ChangeStatusOrderServlet";    
-    private final String DETAIL_ORDER_CONTROLLER = "DetailOrderServlet";
+    private final String DETAIL_ORDER_CONTROLLER = "DetailOrderServlet";        
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,7 +49,7 @@ public class DispatchController extends HttpServlet {
         String button = request.getParameter("btAction");
         try {
             if (button == null) {
-                url = PROCESS_REQUEST_CONTROLLER;
+                url = PROCESS_REQUEST_CONTROLLER;                
             } else if (button.equals("Login")) {
                 url = LOGIN_CONTROLLER;
             } else if (button.equals("Logout")) {
@@ -76,7 +76,7 @@ public class DispatchController extends HttpServlet {
                 url = CHANGE_STATUS_ORDER_CONTROLLER;
             } else if(button.equals("ViewDetailOrder")) {
                 url = DETAIL_ORDER_CONTROLLER;
-            }else {
+            } else {
                 url = PROCESS_REQUEST_CONTROLLER;
             }
         } finally {

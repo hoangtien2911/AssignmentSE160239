@@ -26,10 +26,12 @@ import tienph.utils.MyUtils;
  * @author Hp
  */
 public class ProcessRequestServlet extends HttpServlet {
+
     private final String HOME_PAGE = "./user/home.jsp";
+    private final String MANAGE_ACCOUNT_ADMIN_PAGE = "./admin/manageAccount.jsp";
+
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -40,8 +42,18 @@ public class ProcessRequestServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = HOME_PAGE;
+        HttpSession session = request.getSession();
         try {
-            //1. Call DAO
+            if ((AccountDTO) session.getAttribute("ACCOUNT_ADMIN") != null) {
+                ArrayList<AccountDTO> listAccount = AccountDAO.getAccounts();
+                request.setAttribute("LIST_ACCOUNT_USER", listAccount);
+                url = MANAGE_ACCOUNT_ADMIN_PAGE;
+            } else {
+                ArrayList<ClothesDTO> listClothes = ClothesDAO.getAllClothes();
+                ArrayList<ClothesDTO> listSpecial = ClothesDAO.getClothesByCategory("special");
+                request.setAttribute("LIST_SPECIAL", listSpecial);
+                request.setAttribute("LIST_CLOTHES", listClothes);
+            }
             Cookie[] cookies = request.getCookies();
             String token = "";
             if (cookies != null) {
@@ -50,27 +62,26 @@ public class ProcessRequestServlet extends HttpServlet {
                         token = cookie.getValue();
                     }
                 }
-            }
-            AccountDTO account = AccountDAO.getAccountByToken(token);
-            if(account != null) {
-                HttpSession session = request.getSession();
-                if (account.getRole() == 1) {
-                    
-                } else {
-                    session.setAttribute("USERNAME", MyUtils.splitFullname(account.getFullname()));
-                    session.setAttribute("ACCOUNT_USER", account);
-                }                
-            }
-            
-            ArrayList<ClothesDTO> listClothes = ClothesDAO.getAllClothes();
-            ArrayList<ClothesDTO> listSpecial = ClothesDAO.getClothesByCategory("special");
-            request.setAttribute("LIST_SPECIAL", listSpecial);
-            request.setAttribute("LIST_CLOTHES", listClothes);
+                AccountDTO account = AccountDAO.getAccountByToken(token);
+                if (account != null) {
+                    if (account.getRole() == 1) {
+                        System.out.println("oh noooooo");
+                        ArrayList<AccountDTO> listAccount = AccountDAO.getAccounts();
+                        session.setAttribute("USERNAME", MyUtils.splitFullname(account.getFullname()));
+                        session.setAttribute("ACCOUNT_ADMIN", account);
+                        request.setAttribute("LIST_ACCOUNT_USER", listAccount);
+                        url = MANAGE_ACCOUNT_ADMIN_PAGE;
+                    } else {
+                        session.setAttribute("USERNAME", MyUtils.splitFullname(account.getFullname()));
+                        session.setAttribute("ACCOUNT_USER", account);
+                    }
+                }
+            }            
         } catch (SQLException e) {
             log("PROCESS_REQUEST_SERVLET - SQL: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             log("PROCESS_REQUEST_SERVLET - ClassNotFound: " + e.getMessage());
-        }finally {
+        } finally {
             RequestDispatcher rd = request.getRequestDispatcher(url);
             rd.forward(request, response);
         }

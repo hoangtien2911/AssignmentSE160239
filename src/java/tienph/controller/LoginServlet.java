@@ -29,7 +29,7 @@ import tienph.utils.SecurityUtils;
  */
 public class LoginServlet extends HttpServlet {
     private final String HOME_PAGE = "./user/home.jsp";
-    private final String ADMIN_PAGE = "./user/admin.jsp";
+    private final String MANAGE_ACCOUNT_ADMIN_PAGE = "./admin/manageAccount.jsp";
     private final String INVALID_PAGE = "./user/login.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -63,8 +63,11 @@ public class LoginServlet extends HttpServlet {
                     response.addCookie(cookie);
                 }
                 if(acc.getRole() ==  1) {
+                    ArrayList<AccountDTO> listAccount = AccountDAO.getAccounts();
+                    session.setAttribute("USERNAME", MyUtils.splitFullname(acc.getFullname()));
                     session.setAttribute("ACCOUNT_ADMIN", acc);
-                    url = ADMIN_PAGE;
+                    request.setAttribute("LIST_ACCOUNT_USER", listAccount);
+                    url = MANAGE_ACCOUNT_ADMIN_PAGE;
                 }               
                 //USER
                 else {                                        

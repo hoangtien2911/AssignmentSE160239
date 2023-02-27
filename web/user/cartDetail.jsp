@@ -72,7 +72,7 @@
                                                     <c:param name="btAction" value="CartRemoveItem"/>
                                                     <c:param name="idProduct" value="${dto.id}"/>
                                                 </c:url>
-                                                <a href="${linkDeleteProductCart}" class="btn btn-search" title="Delete clothing">
+                                                <a href="${url}/${linkDeleteProductCart}" class="btn btn-search" title="Delete clothing">
                                                     <i class="fas fa-trash"></i>
                                                 </a>
                                             </div>                                

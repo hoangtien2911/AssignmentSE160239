@@ -137,6 +137,39 @@ a:active {
     height: 30px;        
 }
 
+.user-menu-admin {
+    position: absolute;    
+    top: calc(100% + 5px);
+    right: 0px;
+    width: 130px;
+    background-color:rgb(247, 233, 233);    
+    border-radius: 2px;
+    z-index: 1;
+    box-shadow: 0 2px 5px #cfcbcb;
+    display: none;
+}
+
+.user-menu-admin::before {
+    content: "";
+    position: absolute;
+    right: 8px;
+    top: -30px;
+    border-width: 20px 26px;
+    border-style: solid;
+    border-color: transparent transparent rgb(247, 233, 233) transparent;
+    cursor: pointer;    
+    z-index: -1;
+}
+
+.user-menu-admin::after {    
+    content: "";
+    display: block;
+    position: absolute;
+    top: -85%;
+    width: 130px;
+    height: 30px;        
+}
+
 .user-menu-item a {    
     display: block;
     padding: 5px 10px;
@@ -160,6 +193,10 @@ a:active {
 }
 
 .nav-user:hover .user-menu {
+    display: block;
+}
+
+.nav-user:hover .user-menu-admin {
     display: block;
 }
 

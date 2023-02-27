@@ -7,23 +7,24 @@ package tienph.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import tienph.utils.SecurityUtils;
+import tienph.dao.ClothesDAO;
+import tienph.dto.ClothesDTO;
 
 /**
  *
  * @author Hp
  */
-public class LogoutServlet extends HttpServlet {    
-
+public class ViewClothesAdminServlet extends HttpServlet {
+    private final String MANAGE_CLOTHES_PAGE = "./admin/manageClothes.jsp";
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -32,15 +33,19 @@ public class LogoutServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");        
+        response.setContentType("text/html;charset=UTF-8");
+        String url = MANAGE_CLOTHES_PAGE;
         try {
-            HttpSession session = request.getSession();            
-            Cookie cookie = new Cookie("token", SecurityUtils.getSecurePassword("changeNewToken"));            
-//            cookie.setMaxAge(0);
-            response.addCookie(cookie);
-            session.invalidate();            
+            //call DAO
+            ArrayList<ClothesDTO> listClothes = ClothesDAO.getAllClothes();
+            request.setAttribute("LIST_CLOTHES", listClothes);
+        } catch (SQLException e) {
+            log("ViewClothesServlet - SQL: " + e.getMessage());
+        }catch (ClassNotFoundException e) {
+            log("ViewClothesServlet - ClassNotFound" + e.getMessage());        
         } finally {
-            response.sendRedirect("DispatchController");
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
     }
 

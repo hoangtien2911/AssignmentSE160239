@@ -135,6 +135,58 @@ public class OrderDAO implements Serializable {
         return listOrder;
     }
     
+    public static ArrayList<OrderDTO> getAllOrders(int status)
+                        throws SQLException, ClassNotFoundException{
+        ArrayList<OrderDTO> listOrder = null;
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            //1. Connect DB
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                //2. Prepare statement String
+                String sql = "SELECT OrderID, OrdDate, shipdate, status, AccID FROM Orders\n";                                                   
+                if (status != 0) {
+                    sql = sql + "WHERE Orders.status = ?";
+                }
+                //3. Prepare statement to set SQL
+                stm = con.prepareStatement(sql);                
+                if (status != 0) {
+                    stm.setInt(1, status);
+                }
+                //4. Execute query
+                rs = stm.executeQuery();
+                while(rs.next()) {
+                    //get field/ column
+                    int orderID = rs.getInt("OrderID");
+                    Date ordDate = rs.getDate("OrdDate");
+                    Date shipdate = rs.getDate("shipdate");
+                    int sta = rs.getInt("status");                                                           
+                    int accId = rs.getInt("AccID");
+                    //Create DTO instance
+                    OrderDTO dto = new OrderDTO(orderID, ordDate, shipdate, sta, accId);
+                    //add account to list
+                    if (listOrder == null) {
+                        listOrder = new ArrayList<>();
+                    }                    
+                    listOrder.add(dto);
+                }
+            } //end if connection is existed
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return listOrder;
+    }
+    
     public static OrderDTO getOrderByOrderId(int orderId)
                         throws SQLException, ClassNotFoundException{        
         OrderDTO dto = null;
@@ -210,6 +262,61 @@ public class OrderDAO implements Serializable {
                     Date ordDate = rs.getDate("OrdDate");
                     Date shipdate = rs.getDate("shipdate");
                     int sta = rs.getInt("status");                                                           
+                    //Create DTO instance
+                    OrderDTO dto = new OrderDTO(orderID, ordDate, shipdate, sta, accId);
+                    //add account to list
+                    if (listOrder == null) {
+                        listOrder = new ArrayList<>();
+                    }                    
+                    listOrder.add(dto);
+                }
+            } //end if connection is existed
+        } finally {
+            if (rs != null) {
+                rs.close();
+            }
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return listOrder;
+    }
+    
+    public static ArrayList<OrderDTO> getAllOrdersByFilter(int status, Date from, Date to)
+                        throws SQLException, ClassNotFoundException{
+        ArrayList<OrderDTO> listOrder = null;
+        Connection con = null;
+        PreparedStatement stm = null;
+        ResultSet rs = null;
+        try {
+            //1. Connect DB
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                //2. Prepare statement String
+                String sql = "SELECT OrderID, OrdDate, shipdate, status, AccID FROM Orders\n" +
+                            "WHERE Orders.OrdDate >= ? AND Orders.OrdDate <= ?\n";
+                if (status != 0) {
+                    sql = sql + " AND Orders.status = ?";
+                }
+                //3. Prepare statement to set SQL
+                stm = con.prepareStatement(sql);
+                stm.setDate(1, from);
+                stm.setDate(2, to);
+                if (status != 0) {
+                    stm.setInt(3, status);                    
+                }                
+                //4. Execute query
+                rs = stm.executeQuery();
+                while(rs.next()) {
+                    //get field/ column
+                    int orderID = rs.getInt("OrderID");
+                    Date ordDate = rs.getDate("OrdDate");
+                    Date shipdate = rs.getDate("shipdate");
+                    int sta = rs.getInt("status");                                                           
+                    int accId = rs.getInt("AccID");
                     //Create DTO instance
                     OrderDTO dto = new OrderDTO(orderID, ordDate, shipdate, sta, accId);
                     //add account to list
@@ -310,6 +417,39 @@ public class OrderDAO implements Serializable {
         }
         return false;
     }       
+    
+    public static boolean updateOrderById(int orderId, Date deliveryDate, int status) 
+            throws SQLException, ClassNotFoundException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            //1. Connect DB
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                //2. Prepare sql statement String
+                String sql = "UPDATE Orders SET shipdate = ?, status = ? WHERE orderID = ?";
+                //3. Create sql statement to set sql
+                stm = con.prepareStatement(sql);
+                stm.setDate(1, deliveryDate);
+                stm.setInt(2, status);
+                stm.setInt(3, orderId);
+                //4. Execute query
+                int row = stm.executeUpdate();
+                //5. Process             
+                if (row > 0) {
+                    return true;
+                } //end if execute success
+            }// end if connection success
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            } 
+        }
+        return false;
+    } 
     
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         String from = "2023-02-17";

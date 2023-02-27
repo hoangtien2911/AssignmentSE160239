@@ -7,23 +7,28 @@ package tienph.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import tienph.utils.SecurityUtils;
+import tienph.dao.OrderDAO;
+import tienph.dto.OrderDTO;
+import tienph.utils.MyUtils;
 
 /**
  *
  * @author Hp
  */
-public class LogoutServlet extends HttpServlet {    
+public class ViewOrdersAdminServlet extends HttpServlet {
+
+    private final String MANAGE_ORDERS_PAGE = "./admin/manageOrders.jsp";
 
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -32,15 +37,43 @@ public class LogoutServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");        
+        response.setContentType("text/html;charset=UTF-8");
+        String url = MANAGE_ORDERS_PAGE;
         try {
-            HttpSession session = request.getSession();            
-            Cookie cookie = new Cookie("token", SecurityUtils.getSecurePassword("changeNewToken"));            
-//            cookie.setMaxAge(0);
-            response.addCookie(cookie);
-            session.invalidate();            
+            String txtStatus = request.getParameter("txtStatus");
+            String from = request.getParameter("DateFrom");
+            String to = request.getParameter("DateTo");
+            int status = 0;
+            if (txtStatus != null) {
+                if (txtStatus.equals("Processing")) {
+                    status = 1;
+                } else if (txtStatus.equals("Completed")) {
+                    status = 2;
+                } else if (txtStatus.equals("Cancel")) {
+                    status = 3;
+                }
+            }
+
+            if ((from != null && !from.isEmpty()) && (to != null && !to.isEmpty())) {
+                Date dateFrom = new Date(MyUtils.parse(from).getTime());
+                Date dateTo = new Date(MyUtils.parse(to).getTime());
+                ArrayList<OrderDTO> listOrder = OrderDAO.getAllOrdersByFilter(status, dateFrom, dateTo);
+                if (listOrder != null) {
+                    request.setAttribute("LIST_ORDERS", listOrder);
+                }
+            } else {                
+                ArrayList<OrderDTO> listOrder = OrderDAO.getAllOrders(status);
+                if (listOrder != null) {
+                    request.setAttribute("LIST_ORDERS", listOrder);
+                }
+            }
+        } catch (SQLException e) {
+            log("ViewOrdersServlet - SQL: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            log("ViewOrdersServlet - ClassNotFound" + e.getMessage());
         } finally {
-            response.sendRedirect("DispatchController");
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
     }
 

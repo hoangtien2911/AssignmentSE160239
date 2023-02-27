@@ -6,22 +6,28 @@
 package tienph.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.SQLException;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import tienph.dao.OrderDAO;
 
 /**
  *
  * @author Hp
  */
-public class ChangeStatusOrderServlet extends HttpServlet {
-
-    private final String ORDER_HISTORY_PAGE = "DispatchController?btAction=OrderHistory";
-
+public class AdminController extends HttpServlet {
+    private final String PROCESS_REQUEST_CONTROLLER = "ProcessRequestServlet";
+    private final String CHANGE_ACCOUNT_STATUS_CONTROLLER = "ChangeAccountStatusAdminServlet";
+    private final String VIEW_CATEGORIES_CONTROLLER = "ViewCategoriesAdminServlet";
+    private final String UPDATE_CATEGORY_CONTROLLER = "UpdateCategoryAdminServlet";
+    private final String CREATE_CATEGORY_CONTROLLER = "CreateCategoryAdminServlet";
+    private final String VIEW_CLOTHES_CONTROLLER = "ViewClothesAdminServlet";
+    private final String UPDATE_CLOTHES_CONTROLLER = "UpdateClothesAdminServlet";
+    private final String CREATE_CLOTHES_CONTROLLER = "CreateClothesAdminServlet";
+    private final String VIEW_ORDERS_CONTROLLER = "ViewOrdersAdminServlet";
+    private final String UPDATE_ORDER_CONTROLLER = "UpdateOrderAdminServlet";
+    private final String VIEW_ORDER_DETAIL_CONTROLLER = "ViewOrderDetailAdminServlet";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
@@ -33,32 +39,34 @@ public class ChangeStatusOrderServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        String url = ORDER_HISTORY_PAGE;
+        String url = PROCESS_REQUEST_CONTROLLER;
+        //which button does user click?
+        String button = request.getParameter("btAction");
         try {
-            int orderId = Integer.parseInt(request.getParameter("orderId"));
-            int status = Integer.parseInt(request.getParameter("status"));
-            String lastFilterStatus = request.getParameter("lastFilterStatus");
-            String lastFilterDateFrom = request.getParameter("lastFilterDateFrom");
-            String lastFilterDateTo = request.getParameter("lastFilterDateTo");
-            if ((lastFilterStatus != null && !lastFilterStatus.isEmpty())
-                    && (lastFilterDateFrom != null && !lastFilterDateFrom.isEmpty())
-                    && (lastFilterDateTo != null && !lastFilterDateTo.isEmpty())) {
-                url = url + "&DateFrom=" + lastFilterDateFrom + "&DateTo=" + lastFilterDateTo + "&txtStatus=" + lastFilterStatus;
-            } else if (
-                    (lastFilterStatus != null && !lastFilterStatus.isEmpty())
-                    && (lastFilterDateFrom == null || lastFilterDateFrom.isEmpty())
-                    && (lastFilterDateTo == null || lastFilterDateTo.isEmpty())
-                ) {                
-                url = url + "&txtStatus=" + lastFilterStatus;
+            if (button == null) {
+                url = PROCESS_REQUEST_CONTROLLER;                
+            } else if (button.equals("ChangeAccountStatus")) {
+                url = CHANGE_ACCOUNT_STATUS_CONTROLLER;            
+            } else if (button.equals("ViewCategories")) {
+                url = VIEW_CATEGORIES_CONTROLLER;
+            } else if (button.equals("UpdateCategory")) {
+                url = UPDATE_CATEGORY_CONTROLLER;
+            } else if (button.equals("CreateNewCategory")) {
+                url = CREATE_CATEGORY_CONTROLLER;
+            } else if (button.equals("ViewClothes")) {
+                url = VIEW_CLOTHES_CONTROLLER;
+            } else if (button.equals("ViewOrders")) {
+                url = VIEW_ORDERS_CONTROLLER;
+            } else if (button.equals("UpdateOrder")) {
+                url = UPDATE_ORDER_CONTROLLER;
+            } else if (button.equals("ViewOrderDetail")) {
+                url = VIEW_ORDER_DETAIL_CONTROLLER;
+            } else {
+                url = PROCESS_REQUEST_CONTROLLER;
             }
-            //Call DAO
-            OrderDAO.changeStatusOrderById(orderId, status);
-        } catch (SQLException e) {
-            log("CancelOrderServlet - SQL: " + e.getMessage());
-        } catch (ClassNotFoundException e) {
-            log("CancelOrderServlet - ClassNotFound: " + e.getMessage());
         } finally {
-            response.sendRedirect(url);
+            RequestDispatcher rd = request.getRequestDispatcher(url);
+            rd.forward(request, response);
         }
     }
 

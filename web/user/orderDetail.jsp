@@ -31,7 +31,7 @@
             <c:set var="processing" value="Processing"/>
             <c:set var="completed" value="Completed"/>
             <c:set var="cancel" value="Cancel"/>
-            <!-- Status of nearest order -->           
+            <!-- Status of order -->           
             <div class="container px-1 px-md-4 py-5 mx-auto">
                 <!-- <div class="title text-center">
                     <h2 class="position-relative d-inline-block">New Collection</h2>
@@ -120,7 +120,7 @@
 
                 </div>
             </div>
-            <!-- End of status nearest order -->
+            <!-- End of status order -->
             <!-- Information of order -->
             <section id="cart-container" class="pb-5">
                 <div class="container">
@@ -177,25 +177,28 @@
                                         </c:when>
                                     </c:choose>
 
-                                    <c:if test="${orderInfor.status eq 1}">
-                                        <c:url var="linkCancelOrder" value="DispatchController">
-                                            <c:param name="btAction" value="ChangeStatusOrder"/>
-                                            <c:param name="orderId" value="${orderInfor.orderId}"/>
+                                    <c:url var="linkChangeStatusOrder" value="DispatchController">                                                    
+                                        <c:param name="btAction" value="ChangeStatusOrder"/>
+                                        <c:param name="orderId" value="${orderInfor.orderId}"/>
+                                        <c:if test="${orderInfor.status eq 1}">
                                             <c:param name="status" value = "${3}"/>
-                                        </c:url>
-                                        <a href="${linkCancelOrder}" class="btn btn-search fs-6 ms-2" title="Cancel">
-                                            <i class="fa-solid fa-xmark"></i>
-                                        </a>                                                                           
-                                    </c:if>
-                                    <c:if test="${orderInfor.status eq 3}">
-                                        <c:url var="linkCancelOrder" value="DispatchController">
-                                            <c:param name="btAction" value="ChangeStatusOrder"/>
-                                            <c:param name="orderId" value="${orderInfor.orderId}"/>
+                                        </c:if>
+                                        <c:if test="${orderInfor.status eq 3}">
                                             <c:param name="status" value = "${1}"/>
-                                        </c:url>
-                                        <a href="${linkCancelOrder}" class="btn btn-search fs-6 ms-2" title="Order Again">
+                                        </c:if>
+                                        <c:param name="lastFilterStatus" value="${param.txtStatus}"/>
+                                        <c:param name="lastFilterDateFrom" value="${param.DateFrom}"/>
+                                        <c:param name="lastFilterDateTo" value="${param.DateTo}"/>
+                                    </c:url>
+                                    <c:if test="${orderInfor.status eq 1}">
+                                        <a href="${linkChangeStatusOrder}" class="btn btn-search fs-6 ms-2" title="Cancel">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </a>                                                                                 
+                                    </c:if>
+                                    <c:if test="${orderInfor.status eq 3}">                                                
+                                        <a href="${linkChangeStatusOrder}" class="btn btn-search fs-6 ms-2" title="Order Again">
                                             <i class="fa-solid fa-rotate-left"></i>
-                                        </a> 
+                                        </a>                                                 
                                     </c:if>
                                 </td>
                             </tr>

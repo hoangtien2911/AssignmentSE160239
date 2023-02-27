@@ -1,34 +1,31 @@
 <%-- 
-    Document   : orderHistory
-    Created on : Feb 18, 2023, 1:17:55 AM
+    Document   : manageOrder
+    Created on : Feb 27, 2023, 4:00:47 PM
     Author     : Hp
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="url" value="${pageContext.request.scheme}://${pageContext.request.serverName}:${pageContext.request.serverPort}${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Order History</title>        
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Manage Clothes</title>
     </head>
-    <body>
-        <c:set var="sessionUser" value="${sessionScope.ACCOUNT_USER}"/>
-        <c:if test="${not empty sessionUser}">
-            <!--Header-->
-            <%@include file="../common/header.jsp" %>
-            <!--End of header-->
-
-
+    <body>        
+        <c:set var="accountAdmin" value="${sessionScope.ACCOUNT_ADMIN}"/>
+        <c:if test="${not empty accountAdmin}">
+            <%@include file="../common/headerAdmin.jsp" %>            
             <section id="cart-container" class="d-flex align-items-center mt-5 pt-5">
                 <div class="container mt-md-5">
                     <div class="title text-center">
-                        <h2 class="position-relative d-inline-block mb-5">Your Order</h2>
+                        <h2 class="position-relative d-inline-block mb-5">View Order</h2>
                     </div>
 
-                    <form action="DispatchController">
+                    <form action="AdminController">
                         <span>From: </span>
                         <input type="date" name="DateFrom" value="${param.DateFrom}"/>
                         <span>To: </span>
@@ -64,14 +61,14 @@
                                 </c:otherwise>
                             </c:choose>                                                        
                         </select>
-                        <button type="submit" name="btAction" value="OrderHistory" class="btn-second fs-6 ms-2">
+                        <button type="submit" name="btAction" value="ViewOrders" class="btn-second fs-6 ms-2">
                             Filter
                         </button>                        
                     </form>                                                  
                 </div>
             </section>
-            <c:set var="listOrder" value="${requestScope.LIST_ORDER}"/>
-            <c:if test="${not empty listOrder}">                                                
+            <c:set var="listOrders" value="${requestScope.LIST_ORDERS}"/>
+            <c:if test="${not empty listOrders}">                                                
                 <!-- Information of order -->
 
                 <section id="cart-container" class="d-flex align-items-start mb-5">
@@ -79,77 +76,80 @@
                         <table class="mt-5">
                             <thead class="h6 text-center">
                                 <tr>
-                                    <td>No.</td>                                
+                                    <td>OrderID</td>                                
                                     <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Order Date</td>
                                     <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Delivery Date</td>
-                                    <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Status</td>                        
+                                    <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Status</td>   
+                                    <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">AccID</td>
+                                    <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Update</td>
                                     <td>View Detail</td>
                                 </tr>
                             </thead>
 
                             <tbody class="text-center">                            
-                                <c:forEach var="dto" items="${listOrder}" varStatus="counter">
+                                <c:forEach var="dto" items="${listOrders}">
+                                <form action="AdminController">
+                                    <input type="hidden" name="lastFilterDateFrom" value="${param.DateFrom}" />
+                                    <input type="hidden" name="lastFilterDateTo" value="${param.DateTo}" />
+                                    <input type="hidden" name="lastFilterStatus" value="${param.txtStatus}" />                                    
                                     <tr> 
-                                        <td>${counter.count}</td>                                                                                                   
+                                        <td>
+                                            ${dto.orderId}
+                                            <input type="hidden" name="orderId" value="${dto.orderId}" />                                    
+                                        </td>                                                                                                   
                                         <td>
                                             ${dto.orderDate}
+                                        </td>                                                                
+                                        <td>
+                                            <c:if test="${dto.status eq 3}">
+                                                ${dto.shipDate}
+                                            </c:if>
+                                            <c:if test="${dto.status ne 3}">
+                                                <input type="date" name="newShipDate" value="${dto.shipDate}"  class="w-50"/>
+                                            </c:if>                                            
                                         </td>
                                         <td>
-                                            ${dto.shipDate}
-                                        </td>
-                                        <td>
-                                            <c:choose>
-                                                <c:when test="${dto.status eq 1}">
-                                                    ${processing}
-                                                </c:when>
-                                                <c:when test="${dto.status eq 2}">
-                                                    ${completed}
-                                                </c:when>
-                                                <c:when test="${dto.status eq 3}">
-                                                    ${cancel}
-                                                </c:when>
-                                            </c:choose>
-
-                                            <c:url var="linkChangeStatusOrder" value="DispatchController">                                                    
-                                                <c:param name="btAction" value="ChangeStatusOrder"/>
-                                                <c:param name="orderId" value="${dto.orderId}"/>
-                                                <c:if test="${dto.status eq 1}">
-                                                    <c:param name="status" value = "${3}"/>
-                                                </c:if>
-                                                <c:if test="${dto.status eq 3}">
-                                                    <c:param name="status" value = "${1}"/>
-                                                </c:if>
-                                                <c:param name="lastFilterStatus" value="${param.txtStatus}"/>
-                                                <c:param name="lastFilterDateFrom" value="${param.DateFrom}"/>
-                                                <c:param name="lastFilterDateTo" value="${param.DateTo}"/>
-                                            </c:url>
+                                            <c:if test="${dto.status eq 3}">
+                                                ${cancel}
+                                            </c:if>                                            
                                             <c:if test="${dto.status eq 1}">
-                                                <a href="${linkChangeStatusOrder}" class="btn btn-search fs-6 ms-2" title="Cancel">
-                                                    <i class="fa-solid fa-xmark"></i>
-                                                </a>                                                                                 
+                                                <select name="newStatus" class="form-select filter-select d-inline-block ms-2">                                                    
+                                                    <option value="Processing" selected="">Processing</option>
+                                                    <option value="Completed">Completed</option>                                                                                                               
+                                                </select>
                                             </c:if>
-                                            <c:if test="${dto.status eq 3}">                                                
-                                                <a href="${linkChangeStatusOrder}" class="btn btn-search fs-6 ms-2" title="Order Again">
-                                                    <i class="fa-solid fa-rotate-left"></i>
-                                                </a>                                                 
-                                            </c:if>
-
+                                            <c:if test="${dto.status eq 2}">
+                                                <select name="newStatus" class="form-select filter-select d-inline-block ms-2">                                                    
+                                                    <option value="Processing">Processing</option>
+                                                    <option value="Completed" selected="">Completed</option>                                                                                                               
+                                                </select>
+                                            </c:if>                                            
                                         </td>
                                         <td>
-                                            <c:url var="linkViewOrderDetail" value="DispatchController">
-                                                <c:param name="btAction" value="ViewDetailOrder"/>
+                                            ${dto.accId}
+                                        </td>
+                                        <td>
+                                            <c:if test="${dto.status ne 3}">
+                                                <button type="submit" name="btAction" value="UpdateOrder" class="btn btn-search" title="Update Order">
+                                                    <i class="fa-sharp fa-solid fa-circle-up"></i>
+                                                </button> 
+                                            </c:if>                                                
+                                        </td>
+                                        <td>
+                                            <c:url var="linkViewOrderDetail" value="AdminController">
+                                                <c:param name="btAction" value="ViewOrderDetail"/>
                                                 <c:param name="orderId" value="${dto.orderId}"/>
-                                                <c:param name="orderNumberOfList" value="${counter.count}"/>                                                
                                                 <c:param name="DateFrom" value="${param.DateFrom}"/>
                                                 <c:param name="DateTo" value="${param.DateTo}"/>
-                                                <c:param name="txtStatus" value="${param.txtStatus}"/> 
+                                                <c:param name="txtStatus" value="${param.txtStatus}"/>                                                  
                                             </c:url>
                                             <a href="${linkViewOrderDetail}" class="btn btn-search fs-6 ms-2" title="View Details">
                                                 <i class="fa-solid fa-circle-info"></i>
                                             </a>                                           
                                         </td>
                                     </tr>
-                                </c:forEach>                            
+                                </form>
+                            </c:forEach>                            
 
                             </tbody>
                         </table>            
@@ -158,18 +158,14 @@
 
                 </section>  
             </c:if>
-            <c:if test="${empty listOrder}">
+            <c:if test="${empty listOrders}">
                 <div class="d-flex justify-content-center align-items-start vh-100 mt-5 pt-5">
                     <h3 class="text-primary mt-5">
-                        You don't have any orders!!!
+                        Don't have any orders!!!
                     </h3>     
                 </div>            
             </c:if>
+        </c:if>
 
-
-            <!--Footer-->
-            <%@include file="../common/footer.jsp" %>
-            <!--End of Footer-->            
-        </c:if>        
     </body>
 </html>

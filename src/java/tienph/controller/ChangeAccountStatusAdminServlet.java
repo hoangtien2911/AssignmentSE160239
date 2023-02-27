@@ -6,24 +6,21 @@
 package tienph.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import tienph.utils.SecurityUtils;
+import tienph.dao.AccountDAO;
 
 /**
  *
  * @author Hp
  */
-public class LogoutServlet extends HttpServlet {    
-
+public class ChangeAccountStatusAdminServlet extends HttpServlet {
+    private final String MANAGE_ACCOUNT_ADMIN_PAGE = "AdminController";
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -32,15 +29,19 @@ public class LogoutServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");        
+        response.setContentType("text/html;charset=UTF-8");
+        String url = MANAGE_ACCOUNT_ADMIN_PAGE;
         try {
-            HttpSession session = request.getSession();            
-            Cookie cookie = new Cookie("token", SecurityUtils.getSecurePassword("changeNewToken"));            
-//            cookie.setMaxAge(0);
-            response.addCookie(cookie);
-            session.invalidate();            
-        } finally {
-            response.sendRedirect("DispatchController");
+            String email = request.getParameter("email");
+            int changeStatusTo = Integer.parseInt(request.getParameter("changeStatusTo"));
+            //call DAO 
+            AccountDAO.updateAccountStatus(email, changeStatusTo);
+        } catch (SQLException e) {
+            log("ChangeAccountStatusServlet - SQL: " + e.getMessage());
+        } catch (ClassNotFoundException e) {
+            log("ChangeAccountStatusServlet - ClassNotFound" + e.getMessage());
+        }  finally {
+            response.sendRedirect(url);
         }
     }
 

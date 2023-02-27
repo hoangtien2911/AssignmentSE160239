@@ -127,7 +127,7 @@ public class AccountDAO implements Serializable{
             if (con != null) {
                 //2.Prepare statement String
                 String sql = "SELECT accID, email, password, fullname, phone,"
-                        + " status, role, token FROM dbo.Accounts";
+                        + " status, role, token FROM dbo.Accounts WHERE role = 0";
                 //3. Create statement to set sql
                 stm = con.prepareStatement(sql);
                 //4. Execute query

@@ -21,7 +21,7 @@ import tienph.utils.SecurityUtils;
  * @author Hp
  */
 public class RegistrationServlet extends HttpServlet {
-    private final String LOGIN_PAGE = "./user/login.html";
+    private final String LOGIN_PAGE = "./user/login.jsp";
     private final String ERROR_PAGE = "./user/registration.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
