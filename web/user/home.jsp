@@ -188,6 +188,14 @@
             alert("${msg}");
         </script>
     </c:if>    
-
+        <!-- Jquery -->
+        <script src="${url}/js/jquery-3.6.3.js"></script>
+        <!-- Isotope -->
+        <script src="${url}/js/isotope.pkgd.min.js"></script>
+        <!-- Bootstrap js -->
+        <script src="${url}/bootstrap-5.0.2-dist/js/bootstrap.min.js"></script>
+        <!-- Custom js -->
+        <script src="${url}/js/script.js"></script>
+    
 </body>
 </html>

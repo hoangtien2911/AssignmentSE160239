@@ -218,6 +218,79 @@ public class ClothesDAO implements Serializable {
         return list;
     }
     
+    public static boolean insertCloth(ClothesDTO cloth) 
+            throws ClassNotFoundException, SQLException{ 
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            //1. Connect DB
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                //2. Prepare statement String
+                String sql = "INSERT INTO dbo.Clothes(CName, price, imgPath, description, status, CateID)\n"
+                        + " VALUES (?, ?, ?, ?, ?, ?)";
+                //3. Prepare statement to set sql
+                stm = con.prepareStatement(sql);
+                stm.setString(1, cloth.getName());
+                stm.setInt(2, cloth.getPrice());
+                stm.setString(3, cloth.getImgPath());
+                stm.setString(4, cloth.getDescription());
+                stm.setInt(5, cloth.getStatus());
+                stm.setInt(6, cloth.getCateId());          
+                //4. Execute query 
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                } // end if execute success
+            }// end if connection is existed
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }   
+    
+    public static boolean updateCloth(ClothesDTO cloth)
+            throws ClassNotFoundException, SQLException {
+        Connection con = null;
+        PreparedStatement stm = null;
+        try {
+            //1. Connect DB
+            con = DBUtils.makeConnection();
+            if (con != null) {
+                //2. Prepare statement String 
+                String sql = "UPDATE dbo.Clothes SET CName = ?,\n"
+                        + " price =?, imgPath = ?, description = ?, status = ?, cateID = ? WHERE CID = ?";
+                //3. Prepare statement to set sql
+                stm = con.prepareStatement(sql);
+                stm.setString(1, cloth.getName());
+                stm.setInt(2, cloth.getPrice());
+                stm.setString(3, cloth.getImgPath());
+                stm.setString(4, cloth.getDescription());
+                stm.setInt(5, cloth.getStatus());
+                stm.setInt(6, cloth.getCateId());
+                stm.setInt(7, cloth.getId());
+                //4. Execute query
+                int row = stm.executeUpdate();
+                if (row > 0) {
+                    return true;
+                } // end if execute success
+            } // end if connection is existed
+        } finally {
+            if (stm != null) {
+                stm.close();
+            }
+            if (con != null) {
+                con.close();
+            }
+        }
+        return false;
+    }
+    
     public static void main(String[] args) throws SQLException, ClassNotFoundException {
         ArrayList<ClothesDTO> dto = ClothesDAO.getClothes("shi", "byname");
         for (ClothesDTO clothesDTO : dto) {

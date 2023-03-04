@@ -15,7 +15,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import tienph.dao.AccountDAO;
 import tienph.dao.OrderDAO;
+import tienph.dto.AccountDTO;
 import tienph.dto.OrderDTO;
 import tienph.utils.MyUtils;
 
@@ -39,10 +41,15 @@ public class ViewOrdersAdminServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         String url = MANAGE_ORDERS_PAGE;
-        try {
+        try {            
             String txtStatus = request.getParameter("txtStatus");
             String from = request.getParameter("DateFrom");
             String to = request.getParameter("DateTo");
+            String txtAccId = request.getParameter("accId");
+            int accId = 0;            
+            if (txtAccId != null && !txtAccId.isEmpty()) {
+                accId = Integer.parseInt(request.getParameter("accId"));
+            }
             int status = 0;
             if (txtStatus != null) {
                 if (txtStatus.equals("Processing")) {
@@ -52,21 +59,22 @@ public class ViewOrdersAdminServlet extends HttpServlet {
                 } else if (txtStatus.equals("Cancel")) {
                     status = 3;
                 }
-            }
-
-            if ((from != null && !from.isEmpty()) && (to != null && !to.isEmpty())) {
+            }                        
+            if ((from != null && !from.isEmpty()) && (to != null && !to.isEmpty())) {               
                 Date dateFrom = new Date(MyUtils.parse(from).getTime());
                 Date dateTo = new Date(MyUtils.parse(to).getTime());
-                ArrayList<OrderDTO> listOrder = OrderDAO.getAllOrdersByFilter(status, dateFrom, dateTo);
+                ArrayList<OrderDTO> listOrder = OrderDAO.getAllOrdersByFilter(status, dateFrom, dateTo, accId);
                 if (listOrder != null) {
                     request.setAttribute("LIST_ORDERS", listOrder);
                 }
-            } else {                
-                ArrayList<OrderDTO> listOrder = OrderDAO.getAllOrders(status);
+            } else {                                
+                ArrayList<OrderDTO> listOrder = OrderDAO.getAllOrdersAdmin(status, accId);                                
                 if (listOrder != null) {
                     request.setAttribute("LIST_ORDERS", listOrder);
                 }
-            }
+            }            
+            ArrayList<AccountDTO> listAccount = AccountDAO.getAccounts();
+            request.setAttribute("LIST_ACCOUNT_USER", listAccount);
         } catch (SQLException e) {
             log("ViewOrdersServlet - SQL: " + e.getMessage());
         } catch (ClassNotFoundException e) {

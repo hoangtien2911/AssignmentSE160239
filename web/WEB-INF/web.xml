@@ -96,6 +96,10 @@
         <servlet-name>ViewOrderDetailAdminServlet</servlet-name>
         <servlet-class>tienph.controller.ViewOrderDetailAdminServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>UpdateCreateClothAdminServlet</servlet-name>
+        <servlet-class>tienph.controller.UpdateCreateClothAdminServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>DispatchController</servlet-name>
         <url-pattern>/DispatchController</url-pattern>
@@ -194,6 +198,10 @@
     <servlet-mapping>
         <servlet-name>ViewOrderDetailAdminServlet</servlet-name>
         <url-pattern>/ViewOrderDetailAdminServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>UpdateCreateClothAdminServlet</servlet-name>
+        <url-pattern>/UpdateCreateClothAdminServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

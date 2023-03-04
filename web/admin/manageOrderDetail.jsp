@@ -56,6 +56,7 @@
                         <form action="AdminController">
                             <input type="hidden" name="lastFilterDateFrom" value="${param.DateFrom}" />
                             <input type="hidden" name="lastFilterDateTo" value="${param.DateTo}" />
+                            <input type="hidden" name="lastFilterAccId" value="${param.accId}" /> 
                             <input type="hidden" name="lastFilterStatus" value="${param.txtStatus}" />                                    
                             <tr> 
                                 <td>

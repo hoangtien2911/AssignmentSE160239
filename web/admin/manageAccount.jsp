@@ -56,10 +56,14 @@
                                     </td>
                                     <td>
                                         <c:if test="${dto.status eq 1}">
-                                            Active
+                                            <font style="color: #31d2f2">
+                                                Active
+                                            </font>                                            
                                         </c:if>
                                         <c:if test="${dto.status eq 0}">
-                                            Inactive
+                                            <font class="text-primary">
+                                                Inactive
+                                            </font>                                                
                                         </c:if>
                                     </td>
                                     <td>                                        

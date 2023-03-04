@@ -6,7 +6,6 @@
 package tienph.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import javax.servlet.RequestDispatcher;
@@ -14,7 +13,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import tienph.dao.CategoriesDAO;
 import tienph.dao.ClothesDAO;
+import tienph.dto.CategoriesDTO;
 import tienph.dto.ClothesDTO;
 
 /**
@@ -38,7 +39,10 @@ public class ViewClothesAdminServlet extends HttpServlet {
         try {
             //call DAO
             ArrayList<ClothesDTO> listClothes = ClothesDAO.getAllClothes();
+            ArrayList<CategoriesDTO> listCategories = CategoriesDAO.getAllCategories();
+            request.setAttribute("LIST_CATEGORIES", listCategories);
             request.setAttribute("LIST_CLOTHES", listClothes);
+            request.setAttribute("LIST_CLOTHES_SIZE", listClothes.size());
         } catch (SQLException e) {
             log("ViewClothesServlet - SQL: " + e.getMessage());
         }catch (ClassNotFoundException e) {

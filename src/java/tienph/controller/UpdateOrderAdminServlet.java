@@ -49,31 +49,20 @@ public class UpdateOrderAdminServlet extends HttpServlet {
                     newStatus = 1;
                 } else if (status.equals("Completed")) {
                     newStatus = 2;
-                } else if (status.equals("Cancel")) {
-                    newStatus = 3;
                 }
             }
 
             //get Para for rewriting url
+            String lastFilterAccId = request.getParameter("lastFilterAccId");
             String lastFilterStatus = request.getParameter("lastFilterStatus");
             String lastFilterDateFrom = request.getParameter("lastFilterDateFrom");
             String lastFilterDateTo = request.getParameter("lastFilterDateTo");
             //Call DAO
             Date deliveryDate = new Date(MyUtils.parse(newShipDate).getTime());
             OrderDAO.updateOrderById(orderId, deliveryDate, newStatus);
-            if (
-                    (lastFilterStatus != null && !lastFilterStatus.isEmpty())
-                    && (lastFilterDateFrom != null && !lastFilterDateFrom.isEmpty())
-                    && (lastFilterDateTo != null && !lastFilterDateTo.isEmpty())
-                ) {
-                url = url + "&DateFrom=" + lastFilterDateFrom + "&DateTo=" + lastFilterDateTo + "&txtStatus=" + lastFilterStatus;
-            } else if (
-                    (lastFilterStatus != null && !lastFilterStatus.isEmpty())
-                    && (lastFilterDateFrom == null || lastFilterDateFrom.isEmpty())
-                    && (lastFilterDateTo == null || lastFilterDateTo.isEmpty())
-                ) {                
-                url = url + "&txtStatus=" + lastFilterStatus;
-            }
+            
+                url = url + "&DateFrom=" + lastFilterDateFrom + "&DateTo=" + lastFilterDateTo
+                        + "&txtStatus=" + lastFilterStatus + "&accId=" + lastFilterAccId;            
         } catch (SQLException e) {
             log("ViewOrdersServlet - SQL: " + e.getMessage());
         } catch (ClassNotFoundException e) {

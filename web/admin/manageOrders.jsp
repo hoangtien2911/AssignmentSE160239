@@ -14,6 +14,8 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Manage Clothes</title>
+        <!-- Bootstrap css -->        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/css/bootstrap-select.min.css">        
     </head>
     <body>        
         <c:set var="accountAdmin" value="${sessionScope.ACCOUNT_ADMIN}"/>
@@ -61,9 +63,25 @@
                                 </c:otherwise>
                             </c:choose>                                                        
                         </select>
-                        <button type="submit" name="btAction" value="ViewOrders" class="btn-second fs-6 ms-2">
-                            Filter
-                        </button>                        
+                        <div class="search-select-box d-inline-block">
+                            <select name="accId" data-live-search="true">
+                                <option value="">Choose Account</option>                                
+                                <c:forEach var="dto" items="${requestScope.LIST_ACCOUNT_USER}">
+                                    <c:if test="${param.accId eq dto.accID}">
+                                        <option value="${dto.accID}" selected="">${dto.accID}. ${dto.email}</option>
+                                    </c:if>                                    
+                                    <c:if test="${param.accId ne dto.accID}">
+                                        <option value="${dto.accID}">${dto.accID}. ${dto.email}</option>
+                                    </c:if>     
+                                </c:forEach>                                                                                                
+                            </select>
+                        </div>
+                        <div class="d-inline-block">
+                            <button type="submit" name="btAction" value="ViewOrders" class="btn-second fs-6 ms-3">
+                                Filter
+                            </button>  
+                        </div>
+
                     </form>                                                  
                 </div>
             </section>
@@ -91,7 +109,8 @@
                                 <form action="AdminController">
                                     <input type="hidden" name="lastFilterDateFrom" value="${param.DateFrom}" />
                                     <input type="hidden" name="lastFilterDateTo" value="${param.DateTo}" />
-                                    <input type="hidden" name="lastFilterStatus" value="${param.txtStatus}" />                                    
+                                    <input type="hidden" name="lastFilterAccId" value="${param.accId}" /> 
+                                    <input type="hidden" name="lastFilterStatus" value="${param.txtStatus}" />                                                                        
                                     <tr> 
                                         <td>
                                             ${dto.orderId}
@@ -141,7 +160,8 @@
                                                 <c:param name="orderId" value="${dto.orderId}"/>
                                                 <c:param name="DateFrom" value="${param.DateFrom}"/>
                                                 <c:param name="DateTo" value="${param.DateTo}"/>
-                                                <c:param name="txtStatus" value="${param.txtStatus}"/>                                                  
+                                                <c:param name="txtStatus" value="${param.txtStatus}"/>     
+                                                <c:param name="accId" value="${param.accId}"/>                                                     
                                             </c:url>
                                             <a href="${linkViewOrderDetail}" class="btn btn-search fs-6 ms-2" title="View Details">
                                                 <i class="fa-solid fa-circle-info"></i>
@@ -165,7 +185,15 @@
                     </h3>     
                 </div>            
             </c:if>
-        </c:if>
-
+        </c:if>        
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.3/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.14/dist/js/bootstrap-select.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('.search-select-box select').selectpicker();
+            })
+        </script>
     </body>
 </html>

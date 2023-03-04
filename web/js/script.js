@@ -19,43 +19,43 @@ function resetFilterBtns() {
 
 
 // Login register
-document.addEventListener("DOMContentLoaded", () => {
-  const loginForm = document.querySelector("#login");
-  const registerForm = document.querySelector("#register");
-  document.querySelector("#buttonRegister").addEventListener("click", e => {
-    e.preventDefault();
-    loginForm.classList.add("form-hidden");
-    registerForm.classList.remove("form-hidden");
-  });
-
-  document.querySelector("#buttonLogin").addEventListener("click", e => {    
-    e.preventDefault();
-    loginForm.classList.remove("form-hidden");
-    registerForm.classList.add("form-hidden");
-  });
-});
+//document.addEventListener("DOMContentLoaded", () => {
+//  const loginForm = document.querySelector("#login");
+//  const registerForm = document.querySelector("#register");
+//  document.querySelector("#buttonRegister").addEventListener("click", e => {
+//    e.preventDefault();
+//    loginForm.classList.add("form-hidden");
+//    registerForm.classList.remove("form-hidden");
+//  });
+//
+//  document.querySelector("#buttonLogin").addEventListener("click", e => {    
+//    e.preventDefault();
+//    loginForm.classList.remove("form-hidden");
+//    registerForm.classList.add("form-hidden");
+//  });
+//});
 
 
 // Product change img
-document.addEventListener("DOMContentLoaded", () => {
-  const mainImg = document.getElementById('main-img-product');
-  const smallImg = document.getElementsByClassName('small-img');
-
-  smallImg[0].addEventListener("click", () => {
-    mainImg.src = smallImg[0].src;
-  });
-
-  smallImg[1].addEventListener("click", () => {
-    mainImg.src = smallImg[1].src;
-  });
-
-  smallImg[2].addEventListener("click", () => {
-    mainImg.src = smallImg[2].src;
-  });
-
-  smallImg[3].addEventListener("click", () => {
-    mainImg.src = smallImg[3].src;
-  });
-});
+//document.addEventListener("DOMContentLoaded", () => {
+//  const mainImg = document.getElementById('main-img-product');
+//  const smallImg = document.getElementsByClassName('small-img');
+//
+//  smallImg[0].addEventListener("click", () => {
+//    mainImg.src = smallImg[0].src;
+//  });
+//
+//  smallImg[1].addEventListener("click", () => {
+//    mainImg.src = smallImg[1].src;
+//  });
+//
+//  smallImg[2].addEventListener("click", () => {
+//    mainImg.src = smallImg[2].src;
+//  });
+//
+//  smallImg[3].addEventListener("click", () => {
+//    mainImg.src = smallImg[3].src;
+//  });
+//});
 
 

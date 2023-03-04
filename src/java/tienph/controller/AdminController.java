@@ -23,8 +23,7 @@ public class AdminController extends HttpServlet {
     private final String UPDATE_CATEGORY_CONTROLLER = "UpdateCategoryAdminServlet";
     private final String CREATE_CATEGORY_CONTROLLER = "CreateCategoryAdminServlet";
     private final String VIEW_CLOTHES_CONTROLLER = "ViewClothesAdminServlet";
-    private final String UPDATE_CLOTHES_CONTROLLER = "UpdateClothesAdminServlet";
-    private final String CREATE_CLOTHES_CONTROLLER = "CreateClothesAdminServlet";
+    private final String UPDATE_CLOTH_CONTROLLER = "UpdateCreateClothAdminServlet";        
     private final String VIEW_ORDERS_CONTROLLER = "ViewOrdersAdminServlet";
     private final String UPDATE_ORDER_CONTROLLER = "UpdateOrderAdminServlet";
     private final String VIEW_ORDER_DETAIL_CONTROLLER = "ViewOrderDetailAdminServlet";
@@ -55,6 +54,8 @@ public class AdminController extends HttpServlet {
                 url = CREATE_CATEGORY_CONTROLLER;
             } else if (button.equals("ViewClothes")) {
                 url = VIEW_CLOTHES_CONTROLLER;
+            } else if (button.equals("UpdateCreateCloth")) {                
+                url = UPDATE_CLOTH_CONTROLLER;
             } else if (button.equals("ViewOrders")) {
                 url = VIEW_ORDERS_CONTROLLER;
             } else if (button.equals("UpdateOrder")) {
