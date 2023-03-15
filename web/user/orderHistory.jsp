@@ -100,13 +100,19 @@
                                         <td>
                                             <c:choose>
                                                 <c:when test="${dto.status eq 1}">
-                                                    ${processing}
+                                                    <span class="processing-text">
+                                                        ${processing}
+                                                    </span>                                                    
                                                 </c:when>
                                                 <c:when test="${dto.status eq 2}">
-                                                    ${completed}
+                                                    <span class="success-text">
+                                                        ${completed}
+                                                    </span>                                                    
                                                 </c:when>
                                                 <c:when test="${dto.status eq 3}">
-                                                    ${cancel}
+                                                    <span class="error-text">
+                                                        ${cancel}
+                                                    </span>                                                    
                                                 </c:when>
                                             </c:choose>
 
@@ -138,11 +144,7 @@
                                         <td>
                                             <c:url var="linkViewOrderDetail" value="DispatchController">
                                                 <c:param name="btAction" value="ViewDetailOrder"/>
-                                                <c:param name="orderId" value="${dto.orderId}"/>
-                                                <c:param name="orderNumberOfList" value="${counter.count}"/>                                                
-                                                <c:param name="DateFrom" value="${param.DateFrom}"/>
-                                                <c:param name="DateTo" value="${param.DateTo}"/>
-                                                <c:param name="txtStatus" value="${param.txtStatus}"/> 
+                                                <c:param name="orderId" value="${dto.orderId}"/>                                                
                                             </c:url>
                                             <a href="${linkViewOrderDetail}" class="btn btn-search fs-6 ms-2" title="View Details">
                                                 <i class="fa-solid fa-circle-info"></i>

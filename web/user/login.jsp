@@ -33,14 +33,47 @@
                         <div class="card" style="border-radius: 1rem;">
                             <div class="row g-0">
                                 <div class="col-md-6 col-lg-5 d-none d-md-flex align-items-center">
-                                    <img src="./images/background.png" alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
+                                    <img src="${url}/images/background.png" alt="login form" class="img-fluid" style="border-radius: 1rem 0 0 1rem;" />
                                 </div>
                                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                     <div class="card-body p-4 p-lg-5 text-black">
                                         <div class="login-brand d-flex justify-content-center align-items-center mb-3 pb-1">
-                                            <a href="${url}/user/home.jsp" class="text-dark text-decoration-none"><span class="h3 text-uppercase fw-lighter">Chinn Clothings</span></a>
-                                        </div>   
-                                        <form action="DispatchController" method="POST">                                                                                                                                                            
+                                            <a href="${url}/DispatchController" class="text-dark text-decoration-none"><span class="h3 text-uppercase fw-lighter">Chinn Clothings</span></a>
+                                        </div>
+                                        
+                                        <c:set var="notiLoginAfterChange" value="${requestScope.MSG_LOGIN_AGAIN}"/>
+                                        <c:if test="${not empty notiLoginAfterChange}">
+                                            <div class="d-flex flex-row justify-content-center mb-3">                                                
+                                                <div class="success-text">
+                                                    ${notiLoginAfterChange}                                                
+                                                </div>                                                    
+                                            </div>   
+                                        </c:if>
+                                        <c:set var="notiRegister" value="${requestScope.MSG_REGISTER_SUCCESS}"/>
+                                        <c:if test="${not empty notiRegister}">
+                                            <div class="d-flex flex-row justify-content-center mb-3">                                                
+                                                <div class="success-text">
+                                                    ${notiRegister}                                                
+                                                </div>                                                    
+                                            </div>   
+                                        </c:if>
+                                        <c:set var="notiLogin" value="${requestScope.NOTI_MUST_LOGIN}"/>
+                                        <c:if test="${not empty notiLogin}">
+                                            <div class="d-flex flex-row justify-content-center mb-3">                                                
+                                                <div class="error-text" style="padding: 0">
+                                                    ${notiLogin}                                                
+                                                </div>                                                    
+                                            </div>   
+                                        </c:if>
+                                        <c:set var="notiLoginCheckout" value="${requestScope.MSG_LOGIN_CHECKOUT}"/>
+                                        <c:if test="${not empty notiLoginCheckout}">
+                                            <div class="d-flex flex-row justify-content-center mb-3">                                                
+                                                <div class="error-text" style="padding: 0">
+                                                    ${notiLoginCheckout}                                                
+                                                </div>                                                    
+                                            </div>   
+                                        </c:if>
+                                        <form action="${url}/DispatchController" method="POST">                                                                                                                                                            
                                             <c:set var="error" value="${requestScope.ERROR_MSG}"/>
                                             <div class="d-flex flex-row align-items-center mb-4">
                                                 <i class="fas fa-user fa-lg me-3 fa-fw"></i>

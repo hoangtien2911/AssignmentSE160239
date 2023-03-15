@@ -47,7 +47,7 @@ public class DispatchController extends HttpServlet {
         String url = HOME_PAGE;
         //which button does user click?
         String button = request.getParameter("btAction");
-        try {
+        try {            
             if (button == null) {
                 url = PROCESS_REQUEST_CONTROLLER;                
             } else if (button.equals("Login")) {

@@ -151,8 +151,7 @@ public class OrderDAO implements Serializable {
                     sql = sql + "WHERE Orders.status = ?\n";                    
                 }
                 if (status == 0 && accId != 0) {
-                    sql = sql + "WHERE Orders.AccID = ?\n";
-                    System.out.println("acc " + accId);                    
+                    sql = sql + "WHERE Orders.AccID = ?\n";                                     
                 } else if (status != 0 && accId != 0) {
                     sql = sql + " AND Orders.AccID = ?\n";                    
                 }

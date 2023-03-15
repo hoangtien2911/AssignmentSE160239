@@ -59,21 +59,27 @@ public class ProcessRequestServlet extends HttpServlet {
                     }
                     AccountDTO account = AccountDAO.getAccountByToken(token);
                     if (account != null) {
-                        if (account.getRole() == 1) {
-                            System.out.println("hu");
+                        if (account.getRole() == 1) {                            
                             ArrayList<AccountDTO> listAccount = AccountDAO.getAccounts();
-                            session.setAttribute("USERNAME", MyUtils.splitFullname(account.getFullname()));
+                            session.setAttribute("USERNAME_ADMIN", MyUtils.splitFullname(account.getFullname()));
                             session.setAttribute("ACCOUNT_ADMIN", account);
                             request.setAttribute("LIST_ACCOUNT_USER", listAccount);
                             url = MANAGE_ACCOUNT_ADMIN_PAGE;
                         } else {
-                            session.setAttribute("USERNAME", MyUtils.splitFullname(account.getFullname()));
+                            session.setAttribute("USERNAME_USER", MyUtils.splitFullname(account.getFullname()));
                             session.setAttribute("ACCOUNT_USER", account);
                         }
                     }
                 }
-                ArrayList<ClothesDTO> listClothes = ClothesDAO.getAllClothes();
+                String pageCurrentString = request.getParameter("pageNumber");
+                int pageCurrent = 1;                
+                if (pageCurrentString != null) {
+                    pageCurrent = Integer.parseInt(pageCurrentString);
+                }                
+                int numberPage = (int) Math.ceil(ClothesDAO.countClothes() / 12.0);                
+                ArrayList<ClothesDTO> listClothes = ClothesDAO.getAllClothesByPageIndex(pageCurrent);
                 ArrayList<ClothesDTO> listSpecial = ClothesDAO.getClothesByCategory("special");
+                request.setAttribute("NUMBER_PAGE", numberPage);
                 request.setAttribute("LIST_SPECIAL", listSpecial);
                 request.setAttribute("LIST_CLOTHES", listClothes);
             }

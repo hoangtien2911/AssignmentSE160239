@@ -44,40 +44,8 @@ public class ChangeInformationServlet extends HttpServlet {
         AccountDTO account = (AccountDTO) session.getAttribute("ACCOUNT_USER");
         String txtNewFullname = request.getParameter("txtNewFullName");
         String txtNewPhone = request.getParameter("txtNewPhone");
-        String txtOldPassword = request.getParameter("txtOldPassword");
         String txtNewPassword = request.getParameter("txtNewPassword");
-        String txtConfirmPassword = request.getParameter("txtConfirmPassword");
-        AccountInsertError errors = new AccountInsertError();
-        boolean foundError = false;
-        try {
-            //1. Check all user errors
-            if (txtNewFullname.trim().length() < 8 || txtNewFullname.trim().length() > 50) {
-                foundError = true;
-                errors.setFullNameLengthErr("Fullname is required from 8 to 50 chars."
-                        + " Please try again.");
-            }
-            if (txtNewPhone.trim().length() < 10 || txtNewPhone.trim().length() > 12) {
-                foundError = true;
-                errors.setPhoneLengthErr("Phone is required from 10 to 12 chars."
-                        + " Please try again.");
-            }
-            
-            if (txtNewPassword.length() < 8 || txtNewPassword.length() > 30) {
-                foundError = true;
-                errors.setPasswordLengthErr("Password is required from 8 to 30 chars."
-                        + " Please try again.");                
-            } else if (!txtConfirmPassword.equals(txtNewPassword)) {
-                foundError = true;
-                errors.setConfirmNotMatch("Confirm did not match password."
-                        + " Please try again.");
-            } else if (!SecurityUtils.getSecurePassword(txtOldPassword).equals(account.getPassword())) {                
-                foundError = true;
-                errors.setPasswordOldNotMatch("Old password did not match."
-                        + " Please try again.");                
-            }                  
-            if (foundError) {
-                request.setAttribute("INSERT_ERRORS", errors);
-            } else {
+        try {            
                 //2. Insert to DB                
                 boolean result = AccountDAO.updateAccount(account.getEmail(),
                         SecurityUtils.getSecurePassword(txtNewPassword), txtNewFullname, txtNewPhone);
@@ -86,7 +54,7 @@ public class ChangeInformationServlet extends HttpServlet {
                     session.invalidate();
                     url = LOGIN_PAGE;
                 } //end account created
-            }
+                request.setAttribute("MSG_LOGIN_AGAIN", "You must login again after change information.");
         } catch (SQLException e) {
             log("ChangeInformationServlet - SQL: " + e.getMessage());
         } catch (ClassNotFoundException e) {

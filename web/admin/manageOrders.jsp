@@ -124,23 +124,25 @@
                                                 ${dto.shipDate}
                                             </c:if>
                                             <c:if test="${dto.status ne 3}">
-                                                <input type="date" name="newShipDate" value="${dto.shipDate}"  class="w-50"/>
+                                                <input type="date" name="newShipDate" value="${dto.shipDate}"  class="w-50" required=""/>
                                             </c:if>                                            
                                         </td>
                                         <td>
                                             <c:if test="${dto.status eq 3}">
-                                                ${cancel}
+                                                <span class="error-text p-0">
+                                                    ${cancel}
+                                                </span>
                                             </c:if>                                            
                                             <c:if test="${dto.status eq 1}">
-                                                <select name="newStatus" class="form-select filter-select d-inline-block ms-2">                                                    
-                                                    <option value="Processing" selected="">Processing</option>
-                                                    <option value="Completed">Completed</option>                                                                                                               
+                                                <select name="newStatus" class="form-select filter-select d-inline-block ms-2 processing-text">                                                    
+                                                    <option value="Processing" selected="" class="processing-text">Processing</option>
+                                                    <option value="Completed" class="success-text">Completed</option>                                                                                                               
                                                 </select>
                                             </c:if>
                                             <c:if test="${dto.status eq 2}">
-                                                <select name="newStatus" class="form-select filter-select d-inline-block ms-2">                                                    
-                                                    <option value="Processing">Processing</option>
-                                                    <option value="Completed" selected="">Completed</option>                                                                                                               
+                                                <select name="newStatus" class="form-select filter-select d-inline-block ms-2 success-text">                                                    
+                                                    <option value="Processing" class="processing-text">Processing</option>
+                                                    <option value="Completed" selected="" class="success-text">Completed</option>                                                                                                               
                                                 </select>
                                             </c:if>                                            
                                         </td>
@@ -157,11 +159,7 @@
                                         <td>
                                             <c:url var="linkViewOrderDetail" value="AdminController">
                                                 <c:param name="btAction" value="ViewOrderDetail"/>
-                                                <c:param name="orderId" value="${dto.orderId}"/>
-                                                <c:param name="DateFrom" value="${param.DateFrom}"/>
-                                                <c:param name="DateTo" value="${param.DateTo}"/>
-                                                <c:param name="txtStatus" value="${param.txtStatus}"/>     
-                                                <c:param name="accId" value="${param.accId}"/>                                                     
+                                                <c:param name="orderId" value="${dto.orderId}"/>                                                                                                     
                                             </c:url>
                                             <a href="${linkViewOrderDetail}" class="btn btn-search fs-6 ms-2" title="View Details">
                                                 <i class="fa-solid fa-circle-info"></i>

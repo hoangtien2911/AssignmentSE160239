@@ -38,7 +38,7 @@ public class ClothingDetailServlet extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("productId"));
         try {
             //call DAO
-            ClothesDTO dto = ClothesDAO.getAClothing(id);
+            ClothesDTO dto = ClothesDAO.getAClothing(id, true);
             request.setAttribute("CLOTHING_DETAIL", dto);
         } catch (SQLException e) {
             log("ClothingDetailServlet - SQL: " + e.getMessage());

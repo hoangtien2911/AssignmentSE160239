@@ -51,7 +51,7 @@ public class CartRemoveItemServlet extends HttpServlet {
                     //3. Get selected Item
                     int itemId = Integer.parseInt(request.getParameter("idProduct"));
                     //4. Process
-                    ClothesDTO dto = ClothesDAO.getAClothing(itemId);
+                    ClothesDTO dto = ClothesDAO.getAClothing(itemId, true);
                     cart.removeItemFromCart(dto);                    
                     int cartSize = cart.sizeCart();                    
                     session.setAttribute("CART_SIZE", cartSize);

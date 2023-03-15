@@ -26,6 +26,7 @@ import tienph.utils.MyUtils;
 public class UpdateOrderAdminServlet extends HttpServlet {
 
     private final String MANAGE_ORDERS_PAGE = "AdminController?btAction=ViewOrders";
+    private final String MANAGE_ORDERS_DETAIL_PAGE = "AdminController?btAction=ViewOrderDetail&orderId=";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -40,6 +41,7 @@ public class UpdateOrderAdminServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = MANAGE_ORDERS_PAGE;
         try {
+            String page = request.getParameter("page");
             int orderId = Integer.parseInt(request.getParameter("orderId"));
             String newShipDate = request.getParameter("newShipDate");
             String status = request.getParameter("newStatus");
@@ -51,18 +53,21 @@ public class UpdateOrderAdminServlet extends HttpServlet {
                     newStatus = 2;
                 }
             }
+            if (page != null) {
+                url = MANAGE_ORDERS_DETAIL_PAGE + orderId;
+            } else {
+                //get Para for rewriting url
+                String lastFilterAccId = request.getParameter("lastFilterAccId");
+                String lastFilterStatus = request.getParameter("lastFilterStatus");
+                String lastFilterDateFrom = request.getParameter("lastFilterDateFrom");
+                String lastFilterDateTo = request.getParameter("lastFilterDateTo");
+                url = url + "&DateFrom=" + lastFilterDateFrom + "&DateTo=" + lastFilterDateTo
+                    + "&txtStatus=" + lastFilterStatus + "&accId=" + lastFilterAccId;
+            }
 
-            //get Para for rewriting url
-            String lastFilterAccId = request.getParameter("lastFilterAccId");
-            String lastFilterStatus = request.getParameter("lastFilterStatus");
-            String lastFilterDateFrom = request.getParameter("lastFilterDateFrom");
-            String lastFilterDateTo = request.getParameter("lastFilterDateTo");
             //Call DAO
             Date deliveryDate = new Date(MyUtils.parse(newShipDate).getTime());
-            OrderDAO.updateOrderById(orderId, deliveryDate, newStatus);
-            
-                url = url + "&DateFrom=" + lastFilterDateFrom + "&DateTo=" + lastFilterDateTo
-                        + "&txtStatus=" + lastFilterStatus + "&accId=" + lastFilterAccId;            
+            OrderDAO.updateOrderById(orderId, deliveryDate, newStatus);            
         } catch (SQLException e) {
             log("ViewOrdersServlet - SQL: " + e.getMessage());
         } catch (ClassNotFoundException e) {

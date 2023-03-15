@@ -24,8 +24,7 @@ public class RegistrationServlet extends HttpServlet {
     private final String LOGIN_PAGE = "./user/login.jsp";
     private final String ERROR_PAGE = "./user/registration.jsp";
     /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
      * @param request servlet request
      * @param response servlet response
@@ -38,55 +37,19 @@ public class RegistrationServlet extends HttpServlet {
         String url = ERROR_PAGE;
         String email = request.getParameter("txtEmail");
         String password = request.getParameter("txtPassword");
-        String confirm = request.getParameter("txtConfirm");
         String fullname = request.getParameter("txtFullname");
         String phone = request.getParameter("txtPhone");
-        String chkAgree = request.getParameter("chkAgree");        
         AccountInsertError errors = new AccountInsertError();
-        boolean foundError = false;
-        String regexEmail = "^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$";                
         try {            
-            //1. Check all user errors
-            if (!email.trim().toUpperCase().matches(regexEmail)) {
-                foundError = true;
-                errors.setEmailMatchErr("You have entered an invalid e-mail address."
-                        + " Please try again.");
-            }
-            if (password.length() < 8 || password.length() > 30) {
-                foundError = true;
-                errors.setPasswordLengthErr("Password is required from 8 to 30 chars."
-                        + " Please try again.");                
-            } else if (!confirm.equals(password)) {
-                foundError = true;
-                errors.setConfirmNotMatch("Confirm did not match password."
-                        + " Please try again.");
-            }
-            if (fullname.trim().length() < 8 || fullname.trim().length() > 50) {
-                foundError = true;
-                errors.setFullNameLengthErr("Fullname is required from 8 to 50 chars."
-                        + " Please try again.");
-            }
-            if (phone.trim().length() < 10 || phone.trim().length() > 12) {
-                foundError = true;
-                errors.setPhoneLengthErr("Phone is required from 10 to 12 chars."
-                        + " Please try again.");
-            }
-            if (chkAgree == null || chkAgree.isEmpty()) {
-                foundError = true;
-                errors.setAgreeTermErr("Please check to agree.");
-            }
-            
-            if (foundError) {
-                request.setAttribute("INSERT_ERRORS", errors);
-            } else {
-                //2. Insert to DB             
-                String hashedPassword = SecurityUtils.getSecurePassword(password);                
-                boolean result = AccountDAO.insertAccount(email, hashedPassword, fullname, phone, 1, 0);
-                if (result) {
-                    //transfer to login page
-                    url = LOGIN_PAGE;
-                } //end account created
-            }
+            //2. Insert to DB             
+            String hashedPassword = SecurityUtils.getSecurePassword(password);
+            System.out.println("co nhay vo");
+            boolean result = AccountDAO.insertAccount(email, hashedPassword, fullname, phone, 1, 0);
+            if (result) {
+                //transfer to login page
+                url = LOGIN_PAGE;
+                request.setAttribute("MSG_REGISTER_SUCCESS", "Registration Successful! Please Login.");
+            } //end account created
         } catch (SQLException e) {
             String msg = e.getMessage();
             log("RegisterServlet - SQL: " + msg);

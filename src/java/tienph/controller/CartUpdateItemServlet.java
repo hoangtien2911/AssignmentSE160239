@@ -47,7 +47,7 @@ public class CartUpdateItemServlet extends HttpServlet {
                     int itemId = Integer.parseInt(request.getParameter("idProduct"));
                     int newQuantity = Integer.parseInt(request.getParameter("newQuantity"));
                     //4. Process
-                    ClothesDTO dto = ClothesDAO.getAClothing(itemId);
+                    ClothesDTO dto = ClothesDAO.getAClothing(itemId, true);
                     cart.updateItemQuantity(dto, newQuantity);
                     int cartSize = cart.sizeCart();                    
                     session.setAttribute("CART_SIZE", cartSize);

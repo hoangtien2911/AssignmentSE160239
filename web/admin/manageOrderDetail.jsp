@@ -44,6 +44,7 @@
                             <tr>
                                 <td>OrderID</td>                                
                                 <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Product</td>
+                                <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Total Price</td>
                                 <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Order Date</td>
                                 <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Delivery Date</td>
                                 <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Status</td>   
@@ -54,16 +55,14 @@
 
                         <tbody class="text-center">                                                        
                         <form action="AdminController">
-                            <input type="hidden" name="lastFilterDateFrom" value="${param.DateFrom}" />
-                            <input type="hidden" name="lastFilterDateTo" value="${param.DateTo}" />
-                            <input type="hidden" name="lastFilterAccId" value="${param.accId}" /> 
-                            <input type="hidden" name="lastFilterStatus" value="${param.txtStatus}" />                                    
+                                                             
                             <tr> 
                                 <td>
                                     ${orderInfor.orderId}
                                     <input type="hidden" name="orderId" value="${orderInfor.orderId}" />                                    
                                 </td>                                         
                                 <td>
+                                    <c:set var="totalPrice" value="${0}"/>
                                     <c:forEach var="index" begin="0" end="${sizeOfListClothes - 1}" step="1">
                                         <div class="cart-infor d-flex justify-content-center justify-content-md-start align-items-center flex-wrap">
                                             <img class="img-fluid" src="${listClothesOrder.get(index).imgPath}" alt="">
@@ -73,11 +72,18 @@
                                                     <span class="fw-bold">$${listClothesOrder.get(index).price}</span>
                                                 </small>
                                                 <small class="text-muted d-block text-md-start">Quantity:
-                                                    <span class="fw-bold">${listDetailOrder.get(index).quantity}</span>
+                                                    <span class="fw-normal">${listDetailOrder.get(index).quantity}</span>
                                                 </small>
+                                                <c:set var="totalPrice" value="${totalPrice + listDetailOrder.get(index).quantity * listClothesOrder.get(index).price}"/>
                                             </div>
                                         </div>  
                                     </c:forEach>
+                                </td>
+                                <td>
+                                    $
+                                    <span class="fw-bold text-muted">
+                                        ${totalPrice}
+                                    </span>
                                 </td>
                                 <td>
                                     ${orderInfor.orderDate}
@@ -87,24 +93,26 @@
                                         ${orderInfor.shipDate}
                                     </c:if>
                                     <c:if test="${orderInfor.status ne 3}">
-                                        <input type="date" name="newShipDate" value="${orderInfor.shipDate}"  class="w-75"/>
+                                        <input type="date" name="newShipDate" value="${orderInfor.shipDate}"  class="w-75" required=""/>
                                     </c:if>                                            
                                 </td>
                                 <td>
                                     <c:if test="${orderInfor.status eq 3}">
-                                        ${cancel}
+                                        <span class="error-text p-0">
+                                            ${cancel}
+                                        </span>
                                     </c:if>
 
                                     <c:if test="${orderInfor.status eq 1}">
-                                        <select name="newStatus" class="form-select filter-select d-inline-block ms-2">                                                    
-                                            <option value="Processing" selected="">Processing</option>
-                                            <option value="Completed">Completed</option>                                                                                                               
+                                        <select name="newStatus" class="form-select filter-select d-inline-block ms-2 processing-text">                                                    
+                                            <option value="Processing" selected="" class="processing-text">Processing</option>
+                                            <option value="Completed" class="success-text">Completed</option>                                                                                                               
                                         </select>
                                     </c:if>
                                     <c:if test="${orderInfor.status eq 2}">
-                                        <select name="newStatus" class="form-select filter-select d-inline-block ms-2">                                                    
-                                            <option value="Processing">Processing</option>
-                                            <option value="Completed" selected="">Completed</option>                                                                                                               
+                                        <select name="newStatus" class="form-select filter-select d-inline-block ms-2 success-text">                                                    
+                                            <option value="Processing" class="processing-text">Processing</option>
+                                            <option value="Completed" selected="" class="success-text">Completed</option>                                                                                                               
                                         </select>
                                     </c:if>                                    
                                 </td>
@@ -112,6 +120,7 @@
                                     ${orderInfor.accId}
                                 </td>
                                 <td>
+                                    <input type="hidden" name="page" value="orderDetailAdmin" />
                                     <c:if test="${orderInfor.status ne 3}">
                                         <button type="submit" name="btAction" value="UpdateOrder" class="btn btn-search" title="Update Order">
                                             <i class="fa-sharp fa-solid fa-circle-up"></i>

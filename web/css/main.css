@@ -406,7 +406,12 @@ footer .brand {
     color: red;
     padding-left: 40px;
 }
-
+.processing-text {
+    color: #0d6efd;    
+}
+.success-text {
+    color: #539165;    
+}
 /* Cart */
 #cart-container table thead td {
     background-color: var(--pink);

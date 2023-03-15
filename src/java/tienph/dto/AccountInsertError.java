@@ -134,6 +134,11 @@ public class AccountInsertError implements Serializable{
     public void setPasswordOldNotMatch(String passwordOldNotMatch) {
         this.passwordOldNotMatch = passwordOldNotMatch;
     }
+
+    @Override
+    public String toString() {
+        return "AccountInsertError{" + "emailMatchErr=" + emailMatchErr + ", passwordLengthErr=" + passwordLengthErr + ", confirmNotMatch=" + confirmNotMatch + ", fullNameLengthErr=" + fullNameLengthErr + ", phoneLengthErr=" + phoneLengthErr + ", agreeTermErr=" + agreeTermErr + ", emailIsExisted=" + emailIsExisted + ", passwordOldNotMatch=" + passwordOldNotMatch + '}';
+    }
     
     
 }

@@ -24,7 +24,7 @@ import tienph.dto.ClothesDTO;
  * @author Hp
  */
 public class CheckOutServlet extends HttpServlet {
-    private final String LOGIN_PAGE = "./user/login.html";
+    private final String LOGIN_PAGE = "./user/login.jsp";
     private final String ORDER_PAGE = "DispatchController?btAction=OrderHistory" ;
 
     /**
@@ -53,13 +53,15 @@ public class CheckOutServlet extends HttpServlet {
                     session.removeAttribute("CART_SIZE");
                     session.removeAttribute("CART");
                 }                
+            } else {
+                request.setAttribute("MSG_LOGIN_CHECKOUT", "You must login to checkout.");
             }
         } catch (SQLException e) {
             log("CheckOutServlet - SQL: " + e.getMessage());
         } catch (ClassNotFoundException e) {
             log("CheckOutServlet - ClassNotFound" + e.getMessage());
         }  finally {
-            response.sendRedirect(url);
+            request.getRequestDispatcher(url).forward(request, response);
         }
     }
 

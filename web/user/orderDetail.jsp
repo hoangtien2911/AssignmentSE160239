@@ -132,6 +132,7 @@
                         <thead class="h6 text-center">
                             <tr>
                                 <td>Product</td>                        
+                                <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Total Price</td>
                                 <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Order Date</td>
                                 <td style="border-left: 1px solid #fff;border-right: 1px solid #fff;">Delivery Date</td>
                                 <td>Status</td>
@@ -141,6 +142,7 @@
                         <tbody class="text-center">                            
                             <tr>                        
                                 <td>
+                                    <c:set var="totalPrice" value="${0}"/>
                                     <c:forEach var="index" begin="0" end="${sizeOfListClothes - 1}" step="1">
                                         <div class="cart-infor d-flex justify-content-center justify-content-md-start align-items-center flex-wrap">
                                             <img class="img-fluid" src="${listClothesOrder.get(index).imgPath}" alt="">
@@ -150,14 +152,20 @@
                                                     <span class="fw-bold">$${listClothesOrder.get(index).price}</span>
                                                 </small>
                                                 <small class="text-muted d-block text-md-start">Quantity:
-                                                    <span class="fw-bold">${listDetailOrder.get(index).quantity}</span>
+                                                    <span class="fw-normal">${listDetailOrder.get(index).quantity}</span>
                                                 </small>
+                                                <c:set var="totalPrice" value="${totalPrice + listDetailOrder.get(index).quantity * listClothesOrder.get(index).price}"/>
                                             </div>
                                         </div>  
                                     </c:forEach>
 
                                 </td>
-
+                                <td class="text-muted">
+                                    $
+                                    <span class="fw-bold text-muted">
+                                        ${totalPrice}
+                                    </span>
+                                </td>
                                 <td>
                                     ${orderInfor.orderDate}                          
                                 </td>
@@ -167,13 +175,19 @@
                                 <td>
                                     <c:choose>
                                         <c:when test="${orderInfor.status eq 1}">
-                                            ${processing}
+                                            <span class="processing-text">
+                                                ${processing}
+                                            </span>  
                                         </c:when>
                                         <c:when test="${orderInfor.status eq 2}">
-                                            ${completed}
+                                            <span class="success-text">
+                                                ${completed}
+                                            </span>    
                                         </c:when>
                                         <c:when test="${orderInfor.status eq 3}">
-                                            ${cancel}
+                                            <span class="error-text">
+                                                ${cancel}
+                                            </span>  
                                         </c:when>
                                     </c:choose>
 
@@ -186,9 +200,7 @@
                                         <c:if test="${orderInfor.status eq 3}">
                                             <c:param name="status" value = "${1}"/>
                                         </c:if>
-                                        <c:param name="lastFilterStatus" value="${param.txtStatus}"/>
-                                        <c:param name="lastFilterDateFrom" value="${param.DateFrom}"/>
-                                        <c:param name="lastFilterDateTo" value="${param.DateTo}"/>
+                                        <c:param name="page" value="OrderDetail"/>                                        
                                     </c:url>
                                     <c:if test="${orderInfor.status eq 1}">
                                         <a href="${linkChangeStatusOrder}" class="btn btn-search fs-6 ms-2" title="Cancel">

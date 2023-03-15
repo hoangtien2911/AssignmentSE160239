@@ -24,7 +24,7 @@ import tienph.utils.MyUtils;
  *
  * @author Hp
  */
-public class OrderHistoryServlet extends HttpServlet {
+public class OrderHistoryServlet extends HttpServlet {    
     private final String ORDER_HISTORY_PAGE = "./user/orderHistory.jsp";
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -41,7 +41,7 @@ public class OrderHistoryServlet extends HttpServlet {
         try {            
             HttpSession session = request.getSession();
             AccountDTO account = (AccountDTO) session.getAttribute("ACCOUNT_USER");
-            if (account != null) {
+            if (account != null) {                
                 String txtStatus = request.getParameter("txtStatus");
                 String from = request.getParameter("DateFrom");
                 String to = request.getParameter("DateTo");                             

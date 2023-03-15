@@ -38,7 +38,7 @@
                                 <div class="col-md-6 col-lg-7 d-flex align-items-center">
                                     <div class="card-body p-4 p-lg-5 text-black">
                                         <div class="login-brand d-flex justify-content-center align-items-center mb-3 pb-1">
-                                            <a href="${url}/user/home.jsp" class="text-dark text-decoration-none"><span class="h3 text-uppercase fw-lighter">Chinn Clothings</span></a>
+                                            <a href="${url}/DispatchController" class="text-dark text-decoration-none"><span class="h3 text-uppercase fw-lighter">Chinn Clothings</span></a>
                                         </div>
 
                                         <form action="DispatchController" method="POST">      

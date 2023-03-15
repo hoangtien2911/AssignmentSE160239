@@ -21,6 +21,7 @@ import tienph.dao.OrderDAO;
 public class ChangeStatusOrderServlet extends HttpServlet {
 
     private final String ORDER_HISTORY_PAGE = "DispatchController?btAction=OrderHistory";
+    private final String ORDER_DETAIL_PAGE = "DispatchController?btAction=ViewDetailOrder";
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
@@ -35,22 +36,26 @@ public class ChangeStatusOrderServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String url = ORDER_HISTORY_PAGE;
         try {
+            String page = request.getParameter("page");
             int orderId = Integer.parseInt(request.getParameter("orderId"));
             int status = Integer.parseInt(request.getParameter("status"));
-            String lastFilterStatus = request.getParameter("lastFilterStatus");
-            String lastFilterDateFrom = request.getParameter("lastFilterDateFrom");
-            String lastFilterDateTo = request.getParameter("lastFilterDateTo");
-            if ((lastFilterStatus != null && !lastFilterStatus.isEmpty())
-                    && (lastFilterDateFrom != null && !lastFilterDateFrom.isEmpty())
-                    && (lastFilterDateTo != null && !lastFilterDateTo.isEmpty())) {
-                url = url + "&DateFrom=" + lastFilterDateFrom + "&DateTo=" + lastFilterDateTo + "&txtStatus=" + lastFilterStatus;
-            } else if (
-                    (lastFilterStatus != null && !lastFilterStatus.isEmpty())
-                    && (lastFilterDateFrom == null || lastFilterDateFrom.isEmpty())
-                    && (lastFilterDateTo == null || lastFilterDateTo.isEmpty())
-                ) {                
-                url = url + "&txtStatus=" + lastFilterStatus;
+            if (page != null) {
+                url = ORDER_DETAIL_PAGE + "&orderId=" + orderId;
+            } else {
+                String lastFilterStatus = request.getParameter("lastFilterStatus");
+                String lastFilterDateFrom = request.getParameter("lastFilterDateFrom");
+                String lastFilterDateTo = request.getParameter("lastFilterDateTo");
+                if ((lastFilterStatus != null && !lastFilterStatus.isEmpty())
+                        && (lastFilterDateFrom != null && !lastFilterDateFrom.isEmpty())
+                        && (lastFilterDateTo != null && !lastFilterDateTo.isEmpty())) {
+                    url = url + "&DateFrom=" + lastFilterDateFrom + "&DateTo=" + lastFilterDateTo + "&txtStatus=" + lastFilterStatus;
+                } else if ((lastFilterStatus != null && !lastFilterStatus.isEmpty())
+                        && (lastFilterDateFrom == null || lastFilterDateFrom.isEmpty())
+                        && (lastFilterDateTo == null || lastFilterDateTo.isEmpty())) {
+                    url = url + "&txtStatus=" + lastFilterStatus;
+                }
             }
+
             //Call DAO
             OrderDAO.changeStatusOrderById(orderId, status);
         } catch (SQLException e) {

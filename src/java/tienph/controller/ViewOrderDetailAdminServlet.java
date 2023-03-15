@@ -51,7 +51,7 @@ public class ViewOrderDetailAdminServlet extends HttpServlet {
 
             for (OrderDetailDTO orderDetailDTO : listDetailOrder) {
                 //CALL DAO of clothes and add product to list with each detailID                 
-                ClothesDTO dtoCloth = ClothesDAO.getAClothing(orderDetailDTO.getClothID());                
+                ClothesDTO dtoCloth = ClothesDAO.getAClothing(orderDetailDTO.getClothID(), false);                
                 listClothes.add(dtoCloth);
             }            
 

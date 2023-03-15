@@ -45,7 +45,7 @@
                         </c:if>
                         <!--when logged in-->
                         <c:if test="${not empty accountAdmin}">
-                            <c:set var="username" value="${sessionScope.USERNAME}"/>
+                            <c:set var="username" value="${sessionScope.USERNAME_ADMIN}"/>
                             <li class="nav-user mx-2 d-flex justify-item-center position-relative">
                                 <!--<img src="./images/user.jpg" alt="" class="user-img m-2">-->
                                 <span class="user-name my-2">${username}</span>

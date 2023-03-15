@@ -46,7 +46,7 @@
                         <li>
                             <button type = "button" class = "btn position-relative mx-2">
                                 <i class = "fa fa-heart"></i>
-                                <span class = "position-absolute top-0 start-100 translate-middle badge bg-primary">2</span>
+                                <span class = "position-absolute top-0 start-100 translate-middle badge bg-primary"></span>
                             </button>
                         </li>
 
@@ -62,7 +62,7 @@
                         </c:if>
                         <!--when logged in-->
                         <c:if test="${not empty accountUser}">
-                            <c:set var="username" value="${sessionScope.USERNAME}"/>
+                            <c:set var="username" value="${sessionScope.USERNAME_USER}"/>
                             <li class="nav-user mx-2 d-flex justify-item-center position-relative">
                                 <!--<img src="./images/user.jpg" alt="" class="user-img m-2">-->
                                 <span class="user-name my-2">${username}</span>

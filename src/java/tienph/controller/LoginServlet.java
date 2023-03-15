@@ -64,18 +64,20 @@ public class LoginServlet extends HttpServlet {
                 }
                 if(acc.getRole() ==  1) {
                     ArrayList<AccountDTO> listAccount = AccountDAO.getAccounts();
-                    session.setAttribute("USERNAME", MyUtils.splitFullname(acc.getFullname()));
+                    session.setAttribute("USERNAME_ADMIN", MyUtils.splitFullname(acc.getFullname()));
                     session.setAttribute("ACCOUNT_ADMIN", acc);
                     request.setAttribute("LIST_ACCOUNT_USER", listAccount);
                     url = MANAGE_ACCOUNT_ADMIN_PAGE;
                 }               
                 //USER
-                else {                                        
-                    ArrayList<ClothesDTO> listClothes = ClothesDAO.getAllClothes();
+                else {
+                    int numberPage = (int) Math.ceil(ClothesDAO.countClothes() / 12.0); 
+                    ArrayList<ClothesDTO> listClothes = ClothesDAO.getAllClothesByPageIndex(1);
                     ArrayList<ClothesDTO> listSpecial = ClothesDAO.getClothesByCategory("special");
+                    request.setAttribute("NUMBER_PAGE", numberPage);
                     request.setAttribute("LIST_SPECIAL", listSpecial);
                     request.setAttribute("LIST_CLOTHES", listClothes);
-                    session.setAttribute("USERNAME", MyUtils.splitFullname(acc.getFullname()));
+                    session.setAttribute("USERNAME_USER", MyUtils.splitFullname(acc.getFullname()));
                     session.setAttribute("ACCOUNT_USER", acc);
                     url = HOME_PAGE;
                 }

@@ -41,7 +41,7 @@ public class AddToCartServlet extends HttpServlet {
         try {
             int id = Integer.parseInt(request.getParameter("clothingID"));            
             int quantity = Integer.parseInt(request.getParameter("quantity"));
-            ClothesDTO dto = ClothesDAO.getAClothing(id);
+            ClothesDTO dto = ClothesDAO.getAClothing(id, true);
             HttpSession session = request.getSession();            
             CartObject cart = (CartObject) session.getAttribute("CART");
             if (cart == null) {

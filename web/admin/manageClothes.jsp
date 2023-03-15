@@ -105,10 +105,10 @@
                                         <input type="hidden" name="id" value="${dtoCloth.id}" />                                        
                                     </td>
                                     <td>                                        
-                                        <input type="text" name="newName" value="${dtoCloth.name}" class="w-auto border-0" />    
+                                        <input type="text" name="newName" value="${dtoCloth.name}" class="w-auto border-0" required="" />    
                                     </td>
                                     <td>
-                                        <input type="number" name="newPrice" value="${dtoCloth.price}" class="border-0"/>                                            
+                                        <input type="number" name="newPrice" value="${dtoCloth.price}" class="border-0" required=""/>                                            
                                     </td>
                                     <td>
                                         <img src="${dtoCloth.imgPath}" alt="" class="img-fluid">
@@ -119,19 +119,19 @@
                                         </div>
                                     </td>
                                     <td>                                        
-                                        <textarea name="newDescription" cols="30" rows="10" class="border-0" >${dtoCloth.description}</textarea>                                                              
+                                        <textarea name="newDescription" cols="30" rows="10" class="border-0" required="" >${dtoCloth.description}</textarea>                                                              
                                     </td>
                                     <td>
                                         <c:if test="${dtoCloth.status eq 0}">
-                                            <select name="newStatus" class="form-select filter-select d-inline-block ms-2">                                                    
-                                                <option value="0" selected="">Inactive</option>    
-                                                <option value="1">Active</option>                                                                                                                                                           
+                                            <select name="newStatus" class="form-select filter-select d-inline-block ms-2 error-text p-0">                                                    
+                                                <option value="0" selected="" class="error-text">Inactive</option>    
+                                                <option value="1" class="success-text">Active</option>                                                                                                                                                           
                                             </select>
                                         </c:if>
                                         <c:if test="${dtoCloth.status eq 1}">
-                                            <select name="newStatus" class="form-select filter-select d-inline-block ms-2">                                                    
-                                                <option value="1" selected="">Active</option>    
-                                                <option value="0">Inactive</option>                                                                                                                                                           
+                                            <select name="newStatus" class="form-select filter-select d-inline-block ms-2 success-text p-0">                                                    
+                                                <option value="1" selected="" class="success-text">Active</option>    
+                                                <option value="0" class="error-text">Inactive</option>                                                                                                                                                           
                                             </select>
                                         </c:if>
                                     </td>
